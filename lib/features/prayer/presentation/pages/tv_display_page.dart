@@ -180,11 +180,14 @@ class _TVDisplayPageState extends State<TVDisplayPage> {
               _lastTriggeredBeepMode = currentMode;
             }
 
-            return Focus(
-              focusNode: _mainFocusNode,
-              autofocus: true,
-              onKeyEvent: _handleKeyEvent,
-              child: Scaffold(
+            return Listener(
+              behavior: HitTestBehavior.translucent,
+              onPointerDown: (_) => BeepSoundHelper.initUserInteraction(),
+              child: Focus(
+                focusNode: _mainFocusNode,
+                autofocus: true,
+                onKeyEvent: _handleKeyEvent,
+                child: Scaffold(
                 body: Container(
                   width: double.infinity,
                   height: double.infinity,
@@ -335,7 +338,8 @@ class _TVDisplayPageState extends State<TVDisplayPage> {
                   ),
                 ),
               ),
-            );
+            ),
+          );
           },
         );
       },
