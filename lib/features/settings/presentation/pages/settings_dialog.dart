@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/constants/app_constants.dart';
@@ -6,6 +7,7 @@ import '../../../../core/constants/indonesia_cities_data.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/utils/app_image_helper.dart';
 import '../../../../core/utils/audio/beep_sound_helper.dart';
+import '../../../../core/utils/config/config_transfer_helper.dart';
 import '../../../../core/utils/local_file_picker_helper.dart';
 import '../../../prayer/domain/entities/prayer_schedule.dart';
 import '../../domain/entities/app_settings.dart';
@@ -575,6 +577,415 @@ class _SettingsDialogState extends State<SettingsDialog> {
             ],
           );
         },
+      ),
+    );
+  }
+
+  AppSettings _buildCurrentSettings() {
+    final lat =
+        double.tryParse(_latitudeController.text) ??
+        widget.currentSettings.latitude;
+    final lng =
+        double.tryParse(_longitudeController.text) ??
+        widget.currentSettings.longitude;
+
+    return widget.currentSettings.copyWith(
+      mosqueName: _nameController.text.trim().isEmpty
+          ? widget.currentSettings.mosqueName
+          : _nameController.text.trim(),
+      mosqueAddress: _addressController.text.trim(),
+      cityName: _cityName,
+      latitude: lat,
+      longitude: lng,
+      timezone: _selectedTimezone,
+      ihtiyatMinutes: _selectedIhtiyat,
+      runningText: _runningTextController.text.trim(),
+      iqomahSubuhMinutes: _selectedSubuhIqomah,
+      iqomahDzuhurMinutes: _selectedDzuhurIqomah,
+      iqomahAsharMinutes: _selectedAsharIqomah,
+      iqomahMaghribMinutes: _selectedMaghribIqomah,
+      iqomahIsyaMinutes: _selectedIsyaIqomah,
+      hijriAdjustmentDays: _selectedHijriAdj,
+      slides: _editableSlides,
+      fridayKhutbahMinutes: _selectedFridayKhutbahMinutes,
+      disableFridayIqomah: _disableFridayIqomah,
+      fridayKhotib: _fridayKhotibController.text.trim(),
+      fridayImam: _fridayImamController.text.trim(),
+      fridayMuadzin: _fridayMuadzinController.text.trim(),
+      fridayBilal: _fridayBilalController.text.trim(),
+      enableBeepSound: _enableBeepSound,
+    );
+  }
+
+  void _applySettingsToState(AppSettings s) {
+    setState(() {
+      _nameController.text = s.mosqueName;
+      _addressController.text = s.mosqueAddress;
+      _runningTextController.text = s.runningText;
+      _latitudeController.text = s.latitude.toString();
+      _longitudeController.text = s.longitude.toString();
+      _cityName = s.cityName;
+      _selectedTimezone = s.timezone;
+      _selectedIhtiyat = s.ihtiyatMinutes;
+      _selectedSubuhIqomah = s.iqomahSubuhMinutes;
+      _selectedDzuhurIqomah = s.iqomahDzuhurMinutes;
+      _selectedAsharIqomah = s.iqomahAsharMinutes;
+      _selectedMaghribIqomah = s.iqomahMaghribMinutes;
+      _selectedIsyaIqomah = s.iqomahIsyaMinutes;
+      _selectedHijriAdj = s.hijriAdjustmentDays;
+      _selectedFridayKhutbahMinutes = s.fridayKhutbahMinutes;
+      _disableFridayIqomah = s.disableFridayIqomah;
+      _fridayKhotibController.text = s.fridayKhotib;
+      _fridayImamController.text = s.fridayImam;
+      _fridayMuadzinController.text = s.fridayMuadzin;
+      _fridayBilalController.text = s.fridayBilal;
+      _enableBeepSound = s.enableBeepSound;
+      _editableSlides =
+          (s.slides.isNotEmpty ? s.slides : AppConstants.defaultSlides)
+              .map((slide) => Map<String, String>.from(slide))
+              .toList();
+    });
+  }
+
+  void _openImportDialog() {
+    final pasteController = TextEditingController();
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        backgroundColor: AppColors.surfaceCard,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+          side: const BorderSide(color: AppColors.goldPrimary),
+        ),
+        title: const Row(
+          children: [
+            Icon(Icons.file_download, color: AppColors.goldPrimary),
+            SizedBox(width: 10),
+            Text(
+              'Impor Pengaturan Masjid',
+              style: TextStyle(color: AppColors.textLight, fontSize: 18),
+            ),
+          ],
+        ),
+        content: SizedBox(
+          width: 550,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                'Pilih salah satu cara impor di bawah ini:',
+                style: TextStyle(color: AppColors.textMuted, fontSize: 12),
+              ),
+              const SizedBox(height: 16),
+              // Opsi 1: File Picker / Flashdisk
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton.icon(
+                  onPressed: () async {
+                    final messenger = ScaffoldMessenger.of(context);
+                    final nav = Navigator.of(ctx);
+                    try {
+                      final imported =
+                          await ConfigTransferHelper.pickAndLoadJsonFile();
+                      if (imported != null) {
+                        _applySettingsToState(imported);
+                        if (mounted) {
+                          nav.pop();
+                          messenger.showSnackBar(
+                            const SnackBar(
+                              backgroundColor: Colors.green,
+                              content: Text(
+                                '✅ Pengaturan berhasil diimpor dari file berkas!',
+                              ),
+                            ),
+                          );
+                        }
+                      } else {
+                        if (mounted) {
+                          messenger.showSnackBar(
+                            const SnackBar(
+                              backgroundColor: Colors.orange,
+                              content: Text(
+                                'Berkas tidak dipilih atau format tidak valid.',
+                              ),
+                            ),
+                          );
+                        }
+                      }
+                    } catch (e) {
+                      if (mounted) {
+                        messenger.showSnackBar(
+                          SnackBar(
+                            backgroundColor: Colors.red,
+                            content: Text('Gagal membaca berkas: $e'),
+                          ),
+                        );
+                      }
+                    }
+                  },
+                  icon: const Icon(Icons.folder_open),
+                  label: const Text('📁 Pilih Berkas JSON (Flashdisk / Komputer)'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF0284C7),
+                    foregroundColor: Colors.white,
+                    padding: const EdgeInsets.symmetric(vertical: 14),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 18),
+              const Row(
+                children: [
+                  Expanded(child: Divider(color: AppColors.surfaceCardBorder)),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 10),
+                    child: Text(
+                      'ATAU',
+                      style: TextStyle(color: AppColors.textMuted, fontSize: 11),
+                    ),
+                  ),
+                  Expanded(child: Divider(color: AppColors.surfaceCardBorder)),
+                ],
+              ),
+              const SizedBox(height: 14),
+              const Text(
+                'Tempel / Salin Teks Kode JSON:',
+                style: TextStyle(
+                  color: AppColors.textLight,
+                  fontSize: 12,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 8),
+              TextField(
+                controller: pasteController,
+                maxLines: 4,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 11,
+                  fontFamily: 'monospace',
+                ),
+                decoration: InputDecoration(
+                  hintText: '{\n  "mosqueName": "Masjid...",\n  ...\n}',
+                  hintStyle: const TextStyle(color: AppColors.textMuted),
+                  filled: true,
+                  fillColor: AppColors.bgDarkStart,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: const BorderSide(color: AppColors.surfaceCardBorder),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(ctx).pop(),
+            child: const Text('Batal', style: TextStyle(color: AppColors.textMuted)),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              final raw = pasteController.text.trim();
+              final parsed = ConfigTransferHelper.importFromJson(raw);
+              if (parsed != null) {
+                _applySettingsToState(parsed);
+                Navigator.of(ctx).pop();
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    backgroundColor: Colors.green,
+                    content: Text('✅ Pengaturan berhasil diimpor dari teks JSON!'),
+                  ),
+                );
+              } else {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    backgroundColor: Colors.red,
+                    content: Text('Format teks JSON tidak valid. Periksa kembali kodenya.'),
+                  ),
+                );
+              }
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppColors.goldPrimary,
+              foregroundColor: AppColors.textDark,
+            ),
+            child: const Text('Terapkan Teks JSON'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _openExportDialog() {
+    final current = _buildCurrentSettings();
+    ConfigTransferHelper.downloadJsonFile(current);
+    final jsonStr = ConfigTransferHelper.exportToJson(current);
+
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        backgroundColor: AppColors.surfaceCard,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+          side: const BorderSide(color: AppColors.goldPrimary),
+        ),
+        title: const Row(
+          children: [
+            Icon(Icons.check_circle, color: Colors.green),
+            SizedBox(width: 10),
+            Text(
+              'Ekspor Pengaturan Berhasil',
+              style: TextStyle(color: AppColors.textLight, fontSize: 18),
+            ),
+          ],
+        ),
+        content: SizedBox(
+          width: 550,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                'Berkas "pengaturan_jadwal_sholat.json" telah diunduh otomatis. Anda dapat menyalin file ini ke Flashdisk untuk diimpor di Smart TV.',
+                style: TextStyle(color: AppColors.textMuted, fontSize: 12),
+              ),
+              const SizedBox(height: 14),
+              const Text(
+                'Pratinjau Kode JSON Konfigurasi:',
+                style: TextStyle(
+                  color: AppColors.textLight,
+                  fontSize: 12,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 6),
+              Container(
+                height: 140,
+                width: double.infinity,
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: AppColors.bgDarkStart,
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(color: AppColors.surfaceCardBorder),
+                ),
+                child: SingleChildScrollView(
+                  child: SelectableText(
+                    jsonStr,
+                    style: const TextStyle(
+                      color: AppColors.goldLight,
+                      fontSize: 10,
+                      fontFamily: 'monospace',
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        actions: [
+          ElevatedButton.icon(
+            onPressed: () {
+              Clipboard.setData(ClipboardData(text: jsonStr));
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  backgroundColor: Colors.green,
+                  content: Text('📋 Teks JSON berhasil disalin ke clipboard!'),
+                ),
+              );
+            },
+            icon: const Icon(Icons.copy, size: 16),
+            label: const Text('Salin Teks JSON'),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color(0xFF059669),
+              foregroundColor: Colors.white,
+            ),
+          ),
+          TextButton(
+            onPressed: () => Navigator.of(ctx).pop(),
+            child: const Text('Tutup', style: TextStyle(color: AppColors.textMuted)),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _openPermanentTvLinkDialog() {
+    final current = _buildCurrentSettings();
+    final link = ConfigTransferHelper.generatePermanentTvUrl(current);
+
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        backgroundColor: AppColors.surfaceCard,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+          side: const BorderSide(color: AppColors.goldPrimary),
+        ),
+        title: const Row(
+          children: [
+            Icon(Icons.tv, color: AppColors.goldPrimary),
+            SizedBox(width: 10),
+            Text(
+              'Link TV Permanen (Anti-Reset)',
+              style: TextStyle(color: AppColors.textLight, fontSize: 18),
+            ),
+          ],
+        ),
+        content: SizedBox(
+          width: 550,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                'Buka link ini di browser Smart TV Anda dan simpan ke Bookmark. Browser Smart TV Anda tidak akan pernah ter-reset keesokan harinya karena konfigurasi tersimpan permanen di link ini!',
+                style: TextStyle(color: AppColors.textMuted, fontSize: 12),
+              ),
+              const SizedBox(height: 14),
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: AppColors.bgDarkStart,
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(color: AppColors.goldPrimary.withAlpha(120)),
+                ),
+                child: SelectableText(
+                  link,
+                  style: const TextStyle(
+                    color: AppColors.goldLight,
+                    fontSize: 11,
+                    fontFamily: 'monospace',
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        actions: [
+          ElevatedButton.icon(
+            onPressed: () {
+              Clipboard.setData(ClipboardData(text: link));
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  backgroundColor: Colors.green,
+                  content: Text('📋 Link TV Permanen berhasil disalin!'),
+                ),
+              );
+            },
+            icon: const Icon(Icons.copy, size: 16),
+            label: const Text('Salin Link TV'),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color(0xFFD97706),
+              foregroundColor: Colors.white,
+            ),
+          ),
+          TextButton(
+            onPressed: () => Navigator.of(ctx).pop(),
+            child: const Text('Tutup', style: TextStyle(color: AppColors.textMuted)),
+          ),
+        ],
       ),
     );
   }
@@ -1604,6 +2015,101 @@ class _SettingsDialogState extends State<SettingsDialog> {
                           ),
                         ),
                       ],
+                    ),
+                    const SizedBox(height: 18),
+                    // Section: Backup & Transfer Pengaturan
+                    Container(
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: AppColors.bgDarkStart,
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(
+                          color: AppColors.goldPrimary.withAlpha(80),
+                        ),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Row(
+                            children: [
+                              Icon(
+                                Icons.sync_alt,
+                                color: AppColors.goldPrimary,
+                                size: 20,
+                              ),
+                              SizedBox(width: 8),
+                              Text(
+                                'Pencadangan & Transfer Pengaturan (Anti-Reset di TV)',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold,
+                                  color: AppColors.goldLight,
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 6),
+                          const Text(
+                            'Ekspor pengaturan dari laptop/HP Anda ke flashdisk, atau buat link URL permanen agar Smart TV tidak pernah kembali ke pengaturan awal saat dimatikan/di-refresh.',
+                            style: TextStyle(
+                              fontSize: 11,
+                              color: AppColors.textMuted,
+                            ),
+                          ),
+                          const SizedBox(height: 14),
+                          Wrap(
+                            spacing: 12,
+                            runSpacing: 10,
+                            children: [
+                              ElevatedButton.icon(
+                                onPressed: _openImportDialog,
+                                icon: const Icon(Icons.file_download, size: 18),
+                                label: const Text(
+                                  '📥 Impor Pengaturan (JSON/Flashdisk)',
+                                ),
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: const Color(0xFF0284C7),
+                                  foregroundColor: Colors.white,
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 16,
+                                    vertical: 12,
+                                  ),
+                                ),
+                              ),
+                              ElevatedButton.icon(
+                                onPressed: _openExportDialog,
+                                icon: const Icon(Icons.file_upload, size: 18),
+                                label: const Text(
+                                  '📤 Ekspor Pengaturan (Unduh File)',
+                                ),
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: const Color(0xFF059669),
+                                  foregroundColor: Colors.white,
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 16,
+                                    vertical: 12,
+                                  ),
+                                ),
+                              ),
+                              ElevatedButton.icon(
+                                onPressed: _openPermanentTvLinkDialog,
+                                icon: const Icon(Icons.link, size: 18),
+                                label: const Text(
+                                  '🔗 Buat Link TV Permanen',
+                                ),
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: const Color(0xFFD97706),
+                                  foregroundColor: Colors.white,
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 16,
+                                    vertical: 12,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),

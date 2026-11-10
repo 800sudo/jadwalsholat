@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../core/constants/app_constants.dart';
+import '../../../../core/utils/config/config_transfer_helper.dart';
 import '../models/app_settings_model.dart';
 
 abstract class SettingsLocalDataSource {
@@ -17,6 +18,16 @@ class SettingsLocalDataSourceImpl implements SettingsLocalDataSource {
 
   @override
   Future<AppSettingsModel> getSettings() async {
+    // 1. Cek jika ada konfigurasi bawaan dari parameter URL (#config=...)
+    try {
+      final urlSettings = ConfigTransferHelper.loadSettingsFromUrl();
+      if (urlSettings != null) {
+        final model = AppSettingsModel.fromEntity(urlSettings);
+        await saveSettings(model);
+        return model;
+      }
+    } catch (_) {}
+
     List<Map<String, String>> slides = AppConstants.defaultSlides;
     final slidesJson = sharedPreferences.getString(AppConstants.keySlides);
     if (slidesJson != null && slidesJson.isNotEmpty) {
