@@ -10,11 +10,12 @@ class PlatformBeepPlayer {
   static void initUserInteraction() {}
 
   static Future<void> playBeep({
-    int frequency = 950,
-    int durationMs = 200,
+    int frequency = 850,
+    int durationMs = 2000,
   }) async {
     try {
       final res = await _channel.invokeMethod<bool>('playBeep', {
+        'frequency': frequency,
         'durationMs': durationMs,
       });
       if (res != true) {

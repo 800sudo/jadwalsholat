@@ -1235,7 +1235,7 @@ class _SettingsDialogState extends State<SettingsDialog> {
                         contentPadding: EdgeInsets.zero,
                         activeThumbColor: AppColors.goldPrimary,
                         title: const Text(
-                          'Suara Beep 3x (Mau Adzan & Mau Sholat)',
+                          'Suara Beep Peringatan (Mau Adzan & Mau Sholat)',
                           style: TextStyle(
                             fontSize: 13,
                             fontWeight: FontWeight.bold,
@@ -1243,7 +1243,7 @@ class _SettingsDialogState extends State<SettingsDialog> {
                           ),
                         ),
                         subtitle: const Text(
-                          'Membunyikan nada beep 3 kali saat masuk waktu adzan dan saat iqomah habis. Khusus sholat Jum\'at otomatis dinonaktifkan.',
+                          'Membunyikan nada beep panjang (4x 2 detik + 1x penutup 4 detik) saat masuk waktu adzan dan saat iqomah habis. Khusus sholat Jum\'at otomatis dinonaktifkan.',
                           style: TextStyle(
                             fontSize: 11,
                             color: AppColors.textMuted,
@@ -1593,7 +1593,7 @@ class _SettingsDialogState extends State<SettingsDialog> {
                             BeepSoundHelper.playTripleBeep();
                           },
                           icon: const Icon(Icons.volume_up, size: 18),
-                          label: const Text('🔊 Uji Suara Beep 3x'),
+                          label: const Text('🔊 Uji Suara Beep (4x 2s + 1x 4s)'),
                           style: ElevatedButton.styleFrom(
                             backgroundColor: const Color(0xFF4F46E5),
                             foregroundColor: Colors.white,

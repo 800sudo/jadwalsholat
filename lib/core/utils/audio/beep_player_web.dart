@@ -21,8 +21,8 @@ class PlatformBeepPlayer {
   }
 
   static Future<void> playBeep({
-    int frequency = 950,
-    int durationMs = 200,
+    int frequency = 850,
+    int durationMs = 2000,
   }) async {
     try {
       js.context.callMethod('eval', [
@@ -37,13 +37,16 @@ class PlatformBeepPlayer {
             osc.type = 'sine';
             osc.frequency.value = $frequency;
             var now = ctx.currentTime;
-            gain.gain.setValueAtTime(0, now);
-            gain.gain.linearRampToValueAtTime(0.6, now + 0.02);
-            gain.gain.exponentialRampToValueAtTime(0.001, now + ${durationMs / 1000});
+            var durationSec = ${durationMs / 1000};
+            var stopTime = now + durationSec;
+            gain.gain.setValueAtTime(0.0001, now);
+            gain.gain.linearRampToValueAtTime(0.7, now + 0.05);
+            gain.gain.setValueAtTime(0.7, Math.max(now + 0.05, stopTime - 0.05));
+            gain.gain.linearRampToValueAtTime(0.0001, stopTime);
             osc.connect(gain);
             gain.connect(ctx.destination);
             osc.start(now);
-            osc.stop(now + ${durationMs / 1000});
+            osc.stop(stopTime);
           } catch(e) {}
         })();
         '''

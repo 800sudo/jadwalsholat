@@ -8,13 +8,21 @@ void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
   group('Beep Sound System Tests', () {
-    test('BeepSoundHelper playSingleBeep and playTripleBeep execute without exception', () async {
+    test('BeepSoundHelper playSingleBeep and playWarningBeepSequence execute without exception', () async {
       BeepSoundHelper.initUserInteraction();
       await expectLater(
         BeepSoundHelper.playSingleBeep(durationMs: 10),
         completes,
       );
-      await expectLater(BeepSoundHelper.playTripleBeep(), completes);
+      await expectLater(
+        BeepSoundHelper.playWarningBeepSequence(
+          count: 2,
+          initialDurationMs: 5,
+          pauseMs: 5,
+          finalDurationMs: 10,
+        ),
+        completes,
+      );
     });
 
     test('Deteksi pencegahan beep khusus Sholat Jum\'at', () {
