@@ -74,14 +74,14 @@ void main() {
       expect(ConfigTransferHelper.importFromJson('["array"]'), isNull);
     });
 
-    test('generatePermanentTvUrl produces valid URL with base64 config fragment', () {
+    test('generatePermanentTvUrl produces valid URL with base64 config parameter', () {
       final url = ConfigTransferHelper.generatePermanentTvUrl(
         testSettings,
         customBaseUrl: 'https://jadwal-sholat-ecru.vercel.app/',
       );
-      expect(url.startsWith('https://jadwal-sholat-ecru.vercel.app/#config='), isTrue);
+      expect(url.startsWith('https://jadwal-sholat-ecru.vercel.app/?config='), isTrue);
 
-      final rawBase64 = url.split('#config=')[1];
+      final rawBase64 = url.split('?config=')[1];
       expect(rawBase64, isNotEmpty);
     });
   });

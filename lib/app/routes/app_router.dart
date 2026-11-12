@@ -15,5 +15,6 @@ class AppRouter {
         builder: (context, state) => const TVDisplayPage(),
       ),
     ],
+    errorBuilder: (context, state) => const TVDisplayPage(),
   );
 }

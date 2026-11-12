@@ -47,17 +47,28 @@ Future<String?> pickConfigFile() {
 
 String? getUrlConfigParameter() {
   try {
+    final currentUrl = html.window.location.href;
+    final uri = Uri.parse(currentUrl);
+
     // 1. Cek query parameter ?config=...
-    final uri = Uri.parse(html.window.location.href);
     if (uri.queryParameters.containsKey('config')) {
-      return uri.queryParameters['config'];
+      final param = uri.queryParameters['config'];
+      if (param != null && param.trim().isNotEmpty) {
+        return param.trim();
+      }
     }
-    // 2. Cek hash fragment #config=... atau #/config=...
+
+    // 2. Cek hash fragment (#config=..., #/config=..., #/?config=...)
     final hash = html.window.location.hash;
-    if (hash.startsWith('#config=')) {
-      return hash.substring('#config='.length);
-    } else if (hash.startsWith('#/config=')) {
-      return hash.substring('#/config='.length);
+    if (hash.isNotEmpty) {
+      if (hash.startsWith('#config=')) {
+        return hash.substring('#config='.length).trim();
+      } else if (hash.startsWith('#/config=')) {
+        return hash.substring('#/config='.length).trim();
+      } else if (hash.contains('config=')) {
+        final idx = hash.indexOf('config=');
+        return hash.substring(idx + 'config='.length).trim();
+      }
     }
   } catch (_) {}
   return null;
@@ -69,4 +80,32 @@ String getBaseWebUrl() {
   } catch (_) {
     return 'https://jadwal-sholat-ecru.vercel.app/';
   }
+}
+
+void openWebUrlPlatform(String url) {
+  try {
+    html.window.open(url, '_blank');
+  } catch (_) {}
+}
+
+Future<bool> copyToClipboardPlatform(String text) async {
+  try {
+    if (html.window.navigator.clipboard != null) {
+      await html.window.navigator.clipboard!.writeText(text);
+      return true;
+    }
+  } catch (_) {}
+  try {
+    final textarea = html.TextAreaElement()
+      ..value = text
+      ..style.position = 'fixed'
+      ..style.opacity = '0';
+    html.document.body?.append(textarea);
+    textarea.focus();
+    textarea.select();
+    final res = html.document.execCommand('copy');
+    textarea.remove();
+    return res;
+  } catch (_) {}
+  return false;
 }

@@ -49,7 +49,7 @@ class ConfigTransferHelper {
     return importFromJson(content);
   }
 
-  /// Membuat URL TV Permanen (dengan config Base64 di URL hash)
+  /// Membuat URL TV Permanen (dengan config Base64 di URL query ?config=...)
   static String generatePermanentTvUrl(
     AppSettings settings, {
     String? customBaseUrl,
@@ -59,21 +59,36 @@ class ConfigTransferHelper {
     final base64Config = base64Url.encode(utf8.encode(compactJson));
     final base = customBaseUrl ?? getBaseWebUrl();
     final cleanBase = base.split('#')[0].split('?')[0];
-    return '$cleanBase#config=$base64Config';
+    // Gunakan query param ?config=... agar kompatibel penuh dengan Web Router & Smart TV
+    return '$cleanBase?config=$base64Config';
   }
 
   /// Membaca konfigurasi dari parameter URL saat web pertama kali dibuka
   static AppSettings? loadSettingsFromUrl() {
     try {
       final rawParam = getUrlConfigParameter();
-      if (rawParam == null || rawParam.isEmpty) return null;
-      final normalized = base64Url.normalize(rawParam);
+      if (rawParam == null || rawParam.trim().isEmpty) return null;
+      var clean = rawParam.trim();
+      if (clean.contains('&')) {
+        clean = clean.split('&')[0];
+      }
+      final normalized = base64Url.normalize(clean);
       final decodedBytes = base64Url.decode(normalized);
       final decodedString = utf8.decode(decodedBytes);
       return importFromJson(decodedString);
     } catch (_) {
       return null;
     }
+  }
+
+  /// Membuka URL langsung di tab baru (khusus web)
+  static void openWebUrl(String url) {
+    openWebUrlPlatform(url);
+  }
+
+  /// Menyalin teks dengan fallback clipboard yang aman untuk Web & TV
+  static Future<bool> copyToClipboard(String text) async {
+    return copyToClipboardPlatform(text);
   }
 }
 

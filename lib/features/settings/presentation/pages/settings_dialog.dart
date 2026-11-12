@@ -965,14 +965,26 @@ class _SettingsDialogState extends State<SettingsDialog> {
         ),
         actions: [
           ElevatedButton.icon(
-            onPressed: () {
-              Clipboard.setData(ClipboardData(text: link));
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  backgroundColor: Colors.green,
-                  content: Text('📋 Link TV Permanen berhasil disalin!'),
-                ),
-              );
+            onPressed: () => ConfigTransferHelper.openWebUrl(link),
+            icon: const Icon(Icons.open_in_new, size: 16),
+            label: const Text('Buka di Tab Baru'),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color(0xFF0284C7),
+              foregroundColor: Colors.white,
+            ),
+          ),
+          ElevatedButton.icon(
+            onPressed: () async {
+              await Clipboard.setData(ClipboardData(text: link));
+              await ConfigTransferHelper.copyToClipboard(link);
+              if (ctx.mounted) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    backgroundColor: Colors.green,
+                    content: Text('📋 Link TV Permanen berhasil disalin!'),
+                  ),
+                );
+              }
             },
             icon: const Icon(Icons.copy, size: 16),
             label: const Text('Salin Link TV'),

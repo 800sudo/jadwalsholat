@@ -42,3 +42,7 @@ String? getUrlConfigParameter() => null;
 
 String getBaseWebUrl() => 'https://jadwal-sholat-ecru.vercel.app/';
 
+void openWebUrlPlatform(String url) {}
+
+Future<bool> copyToClipboardPlatform(String text) async => false;
+
