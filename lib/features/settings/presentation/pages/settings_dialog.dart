@@ -978,7 +978,7 @@ class _SettingsDialogState extends State<SettingsDialog> {
               await Clipboard.setData(ClipboardData(text: link));
               await ConfigTransferHelper.copyToClipboard(link);
               if (ctx.mounted) {
-                ScaffoldMessenger.of(context).showSnackBar(
+                ScaffoldMessenger.of(ctx).showSnackBar(
                   const SnackBar(
                     backgroundColor: Colors.green,
                     content: Text('📋 Link TV Permanen berhasil disalin!'),
@@ -1047,1165 +1047,1292 @@ class _SettingsDialogState extends State<SettingsDialog> {
         borderRadius: BorderRadius.circular(20),
         side: const BorderSide(color: AppColors.goldPrimary, width: 1.5),
       ),
-      child: Container(
-        constraints: const BoxConstraints(maxWidth: 880, maxHeight: 680),
-        padding: const EdgeInsets.all(24),
-        child: Column(
-          children: [
-            // Header
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Row(
-                  children: [
-                    Icon(Icons.tune, color: AppColors.goldPrimary, size: 28),
-                    SizedBox(width: 12),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'PENGATURAN JADWAL SHOLAT TV',
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            color: AppColors.goldLight,
-                            letterSpacing: 1,
+      child: DefaultTabController(
+        length: 7,
+        child: Container(
+          constraints: const BoxConstraints(maxWidth: 900, maxHeight: 680),
+          padding: const EdgeInsets.all(24),
+          child: Column(
+            children: [
+              // Header
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Row(
+                    children: [
+                      Icon(Icons.tune, color: AppColors.goldPrimary, size: 28),
+                      SizedBox(width: 12),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'PENGATURAN JADWAL SHOLAT TV',
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: AppColors.goldLight,
+                              letterSpacing: 1,
+                            ),
                           ),
+                          SizedBox(height: 2),
+                          Text(
+                            'Support Ke 089660626800',
+                            style: TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w600,
+                              color: AppColors.goldPrimary,
+                              letterSpacing: 0.5,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.close, color: AppColors.textMuted),
+                    onPressed: () => Navigator.of(context).pop(),
+                  ),
+                ],
+              ),
+              const Divider(color: AppColors.surfaceCardBorder, height: 20),
+
+              // Navigation Tabs (Horizontal Scrollable for Smart TV Remote/Mouse)
+              Container(
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: AppColors.bgDarkStart,
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: AppColors.surfaceCardBorder),
+                ),
+                child: TabBar(
+                  isScrollable: true,
+                  tabAlignment: TabAlignment.start,
+                  indicator: BoxDecoration(
+                    color: AppColors.goldPrimary,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  indicatorSize: TabBarIndicatorSize.tab,
+                  labelColor: AppColors.textDark,
+                  labelStyle: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 13,
+                  ),
+                  unselectedLabelColor: AppColors.textMuted,
+                  unselectedLabelStyle: const TextStyle(
+                    fontWeight: FontWeight.normal,
+                    fontSize: 13,
+                  ),
+                  tabs: const [
+                    Tab(icon: Icon(Icons.mosque, size: 18), text: 'Masjid'),
+                    Tab(icon: Icon(Icons.timer, size: 18), text: 'Waktu Jeda'),
+                    Tab(icon: Icon(Icons.calendar_today, size: 18), text: "Jum'at"),
+                    Tab(icon: Icon(Icons.subtitles, size: 18), text: 'Teks Berjalan'),
+                    Tab(icon: Icon(Icons.view_carousel, size: 18), text: 'Slider'),
+                    Tab(icon: Icon(Icons.play_circle_outline, size: 18), text: 'Uji Coba'),
+                    Tab(icon: Icon(Icons.backup, size: 18), text: 'Pencadangan'),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 12),
+
+              // Tab Content Body
+              Expanded(
+                child: TabBarView(
+                  children: [
+                    _buildTabMasjid(),
+                    _buildTabWaktuJeda(),
+                    _buildTabJumat(),
+                    _buildTabTextBerjalan(),
+                    _buildTabSlider(),
+                    _buildTabUjiCoba(),
+                    _buildTabPencadangan(),
+                  ],
+                ),
+              ),
+
+              const Divider(color: AppColors.surfaceCardBorder, height: 20),
+
+              // Action Buttons & Support Info
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  // Support Contact Info
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 14,
+                      vertical: 8,
+                    ),
+                    decoration: BoxDecoration(
+                      color: AppColors.bgDarkStart,
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(color: AppColors.surfaceCardBorder),
+                    ),
+                    child: const Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(
+                          Icons.headset_mic_outlined,
+                          size: 16,
+                          color: AppColors.goldPrimary,
                         ),
-                        SizedBox(height: 2),
+                        SizedBox(width: 8),
                         Text(
                           'Support Ke 089660626800',
                           style: TextStyle(
                             fontSize: 12,
-                            fontWeight: FontWeight.w600,
-                            color: AppColors.goldPrimary,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.goldLight,
                             letterSpacing: 0.5,
                           ),
                         ),
                       ],
                     ),
-                  ],
+                  ),
+                  Row(
+                    children: [
+                      TextButton(
+                        onPressed: () => Navigator.of(context).pop(),
+                        child: const Text(
+                          'Batal',
+                          style: TextStyle(color: AppColors.textMuted),
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      ElevatedButton.icon(
+                        onPressed: _saveSettings,
+                        icon: const Icon(
+                          Icons.check_circle,
+                          color: AppColors.textDark,
+                        ),
+                        label: const Text(
+                          'Simpan Pengaturan',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.textDark,
+                          ),
+                        ),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: AppColors.goldPrimary,
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 24,
+                            vertical: 14,
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  // ================= TAB 1: MASJID DARI NAMA SAMPAI LOKASI HISAB =================
+  Widget _buildTabMasjid() {
+    return SingleChildScrollView(
+      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _buildSectionHeader('Identitas Masjid'),
+          const SizedBox(height: 10),
+          Row(
+            children: [
+              Expanded(
+                child: _buildTextField(
+                  controller: _nameController,
+                  label: 'Nama Masjid',
+                  icon: Icons.mosque,
                 ),
-                IconButton(
-                  icon: const Icon(Icons.close, color: AppColors.textMuted),
-                  onPressed: () => Navigator.of(context).pop(),
+              ),
+              const SizedBox(width: 16),
+              Expanded(
+                child: _buildTextField(
+                  controller: _addressController,
+                  label: 'Alamat Singkat',
+                  icon: Icons.location_on,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 18),
+
+          // Lokasi & Hisab Astronomi Kemenag RI
+          _buildSectionHeader(
+            'Lokasi & Hisab Astronomi Kemenag RI (Seluruh Indonesia)',
+          ),
+          const SizedBox(height: 10),
+
+          // Card Lokasi Terpilih Saat Ini
+          Container(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 14,
+              vertical: 10,
+            ),
+            decoration: BoxDecoration(
+              color: AppColors.emeraldDark.withAlpha(120),
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(
+                color: AppColors.goldPrimary.withAlpha(160),
+                width: 1.2,
+              ),
+            ),
+            child: Row(
+              children: [
+                const Icon(
+                  Icons.location_on,
+                  color: AppColors.goldPrimary,
+                  size: 22,
+                ),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        'Lokasi Terpilih Saat Ini:',
+                        style: TextStyle(
+                          fontSize: 11,
+                          color: AppColors.textMuted,
+                        ),
+                      ),
+                      const SizedBox(height: 2),
+                      Text(
+                        _cityName.isNotEmpty
+                            ? _cityName
+                            : 'Indramayu (Jawa Barat)',
+                        style: const TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.goldLight,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 4,
+                  ),
+                  decoration: BoxDecoration(
+                    color: AppColors.bgDarkStart,
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(
+                      color: AppColors.surfaceCardBorder,
+                    ),
+                  ),
+                  child: Text(
+                    _selectedTimezone == 9.0
+                        ? 'WIT (UTC+9)'
+                        : (_selectedTimezone == 8.0
+                              ? 'WITA (UTC+8)'
+                              : 'WIB (UTC+7)'),
+                    style: const TextStyle(
+                      fontSize: 11,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.goldPrimary,
+                    ),
+                  ),
                 ),
               ],
             ),
-            const Divider(color: AppColors.surfaceCardBorder, height: 24),
+          ),
+          const SizedBox(height: 12),
 
-            // Form Body
-            Expanded(
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // Identitas Masjid
-                    _buildSectionHeader('Identitas Masjid'),
-                    const SizedBox(height: 10),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: _buildTextField(
-                            controller: _nameController,
-                            label: 'Nama Masjid',
-                            icon: Icons.mosque,
-                          ),
-                        ),
-                        const SizedBox(width: 16),
-                        Expanded(
-                          child: _buildTextField(
-                            controller: _addressController,
-                            label: 'Alamat Singkat',
-                            icon: Icons.location_on,
-                          ),
-                        ),
-                      ],
+          // Baris Filter Provinsi & Kotak Pencarian Kota (Listbox)
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                flex: 4,
+                child: _buildDropdown<String>(
+                  label: 'Filter Provinsi (38 Provinsi)',
+                  value: _selectedProvinceFilter,
+                  items: [
+                    const DropdownMenuItem(
+                      value: 'Semua Provinsi',
+                      child: Text('🇮🇩 Semua Provinsi'),
                     ),
-                    const SizedBox(height: 20),
-
-                    // Lokasi & Hisab Astronomi Kemenag RI
-                    _buildSectionHeader(
-                      'Lokasi & Hisab Astronomi Kemenag RI (Seluruh Indonesia)',
+                    ...IndonesiaCitiesData.allProvinces.map((prov) {
+                      return DropdownMenuItem(
+                        value: prov,
+                        child: Text(
+                          prov,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      );
+                    }),
+                  ],
+                  onChanged: _onProvinceFilterChanged,
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                flex: 6,
+                child: TextField(
+                  controller: _citySearchController,
+                  style: const TextStyle(
+                    color: AppColors.textLight,
+                    fontSize: 14,
+                  ),
+                  onChanged: _onCitySearchChanged,
+                  onTap: () {
+                    setState(() {
+                      _isSearchingCity = true;
+                      if (_searchedCities.isEmpty) {
+                        _searchedCities =
+                            IndonesiaCitiesData.searchCities(
+                              _citySearchController.text,
+                              provinceFilter: _selectedProvinceFilter,
+                            );
+                      }
+                    });
+                  },
+                  decoration: InputDecoration(
+                    labelText: 'Cari Kota / Kabupaten Seluruh Indonesia',
+                    hintText:
+                        'Ketik nama kota (misal: IN -> Indramayu, Indragiri...)',
+                    hintStyle: TextStyle(
+                      color: AppColors.textMuted.withAlpha(120),
+                      fontSize: 12,
                     ),
-                    const SizedBox(height: 10),
-
-                    // Card Lokasi Terpilih Saat Ini
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 14,
-                        vertical: 10,
+                    labelStyle: const TextStyle(
+                      color: AppColors.textMuted,
+                      fontSize: 13,
+                    ),
+                    prefixIcon: const Icon(
+                      Icons.search,
+                      color: AppColors.goldPrimary,
+                      size: 20,
+                    ),
+                    suffixIcon: _citySearchController.text.isNotEmpty
+                        ? IconButton(
+                            icon: const Icon(Icons.clear, size: 18),
+                            color: AppColors.textMuted,
+                            onPressed: () {
+                              _citySearchController.clear();
+                              _onCitySearchChanged('');
+                            },
+                          )
+                        : null,
+                    filled: true,
+                    fillColor: AppColors.bgDarkStart,
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: const BorderSide(
+                        color: AppColors.surfaceCardBorder,
                       ),
-                      decoration: BoxDecoration(
-                        color: AppColors.emeraldDark.withAlpha(120),
-                        borderRadius: BorderRadius.circular(12),
-                        border: Border.all(
-                          color: AppColors.goldPrimary.withAlpha(160),
-                          width: 1.2,
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: const BorderSide(
+                        color: AppColors.goldPrimary,
+                        width: 1.5,
+                      ),
+                    ),
+                    contentPadding: const EdgeInsets.symmetric(
+                      horizontal: 14,
+                      vertical: 12,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 8),
+
+          // LISTBOX HASIL PENCARIAN (Bentuk Listbox Interaktif)
+          if (_isSearchingCity) ...[
+            Container(
+              constraints: const BoxConstraints(maxHeight: 220),
+              decoration: BoxDecoration(
+                color: AppColors.bgDarkStart,
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(
+                  color: AppColors.goldPrimary.withAlpha(180),
+                  width: 1.2,
+                ),
+                boxShadow: const [
+                  BoxShadow(
+                    color: Colors.black54,
+                    blurRadius: 10,
+                    offset: Offset(0, 4),
+                  ),
+                ],
+              ),
+              child: _searchedCities.isEmpty
+                  ? const Padding(
+                      padding: EdgeInsets.all(16),
+                      child: Center(
+                        child: Text(
+                          'Tidak ditemukan kota/kabupaten yang sesuai.\nAnda dapat memasukkan koordinat manual di bawah.',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: AppColors.textMuted,
+                            fontSize: 12,
+                          ),
                         ),
                       ),
-                      child: Row(
-                        children: [
-                          const Icon(
-                            Icons.location_on,
-                            color: AppColors.goldPrimary,
-                            size: 22,
-                          ),
-                          const SizedBox(width: 10),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                    )
+                  : ListView.separated(
+                      shrinkWrap: true,
+                      itemCount: _searchedCities.length,
+                      separatorBuilder: (context, i) => const Divider(
+                        color: AppColors.surfaceCardBorder,
+                        height: 1,
+                      ),
+                      itemBuilder: (context, i) {
+                        final city = _searchedCities[i];
+                        final isSelected = city.name == _cityName;
+                        return InkWell(
+                          onTap: () => _selectCity(city),
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 14,
+                              vertical: 10,
+                            ),
+                            color: isSelected
+                                ? AppColors.emeraldDark.withAlpha(160)
+                                : Colors.transparent,
+                            child: Row(
                               children: [
-                                const Text(
-                                  'Lokasi Terpilih Saat Ini:',
-                                  style: TextStyle(
-                                    fontSize: 11,
-                                    color: AppColors.textMuted,
+                                Icon(
+                                  Icons.location_city,
+                                  size: 18,
+                                  color: isSelected
+                                      ? AppColors.goldPrimary
+                                      : AppColors.textMuted,
+                                ),
+                                const SizedBox(width: 12),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        city.name,
+                                        style: TextStyle(
+                                          fontSize: 13,
+                                          fontWeight: isSelected
+                                              ? FontWeight.bold
+                                              : FontWeight.w500,
+                                          color: isSelected
+                                              ? AppColors.goldLight
+                                              : AppColors.textLight,
+                                        ),
+                                      ),
+                                      Text(
+                                        'Provinsi ${city.province} • Lat: ${city.latitude}, Lng: ${city.longitude}',
+                                        style: const TextStyle(
+                                          fontSize: 11,
+                                          color: AppColors.textMuted,
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
-                                const SizedBox(height: 2),
-                                Text(
-                                  _cityName.isNotEmpty
-                                      ? _cityName
-                                      : 'Indramayu (Jawa Barat)',
-                                  style: const TextStyle(
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.bold,
-                                    color: AppColors.goldLight,
+                                if (isSelected)
+                                  const Icon(
+                                    Icons.check_circle,
+                                    color: AppColors.goldPrimary,
+                                    size: 18,
                                   ),
-                                ),
                               ],
                             ),
-                          ),
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 10,
-                              vertical: 4,
-                            ),
-                            decoration: BoxDecoration(
-                              color: AppColors.bgDarkStart,
-                              borderRadius: BorderRadius.circular(8),
-                              border: Border.all(
-                                color: AppColors.surfaceCardBorder,
-                              ),
-                            ),
-                            child: Text(
-                              _selectedTimezone == 9.0
-                                  ? 'WIT (UTC+9)'
-                                  : (_selectedTimezone == 8.0
-                                        ? 'WITA (UTC+8)'
-                                        : 'WIB (UTC+7)'),
-                              style: const TextStyle(
-                                fontSize: 11,
-                                fontWeight: FontWeight.bold,
-                                color: AppColors.goldPrimary,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 12),
-
-                    // Baris Filter Provinsi & Kotak Pencarian Kota (Listbox)
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        // Filter Provinsi (Provinsi -> Kabupaten)
-                        Expanded(
-                          flex: 4,
-                          child: _buildDropdown<String>(
-                            label: 'Filter Provinsi (38 Provinsi)',
-                            value: _selectedProvinceFilter,
-                            items: [
-                              const DropdownMenuItem(
-                                value: 'Semua Provinsi',
-                                child: Text('🇮🇩 Semua Provinsi'),
-                              ),
-                              ...IndonesiaCitiesData.allProvinces.map((prov) {
-                                return DropdownMenuItem(
-                                  value: prov,
-                                  child: Text(
-                                    prov,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                );
-                              }),
-                            ],
-                            onChanged: _onProvinceFilterChanged,
-                          ),
-                        ),
-                        const SizedBox(width: 12),
-                        // Input Box Pencarian (Ketik misal "IN" -> muncul Indramayu, Indragiri...)
-                        Expanded(
-                          flex: 6,
-                          child: TextField(
-                            controller: _citySearchController,
-                            style: const TextStyle(
-                              color: AppColors.textLight,
-                              fontSize: 14,
-                            ),
-                            onChanged: _onCitySearchChanged,
-                            onTap: () {
-                              setState(() {
-                                _isSearchingCity = true;
-                                if (_searchedCities.isEmpty) {
-                                  _searchedCities =
-                                      IndonesiaCitiesData.searchCities(
-                                        _citySearchController.text,
-                                        provinceFilter: _selectedProvinceFilter,
-                                      );
-                                }
-                              });
-                            },
-                            decoration: InputDecoration(
-                              labelText:
-                                  'Cari Kota / Kabupaten Seluruh Indonesia',
-                              hintText: 'Ketik nama kota (misal: IN -> Indramayu, Indragiri...)',
-                              hintStyle: TextStyle(
-                                color: AppColors.textMuted.withAlpha(120),
-                                fontSize: 12,
-                              ),
-                              labelStyle: const TextStyle(
-                                color: AppColors.textMuted,
-                                fontSize: 13,
-                              ),
-                              prefixIcon: const Icon(
-                                Icons.search,
-                                color: AppColors.goldPrimary,
-                                size: 20,
-                              ),
-                              suffixIcon: _citySearchController.text.isNotEmpty
-                                  ? IconButton(
-                                      icon: const Icon(Icons.clear, size: 18),
-                                      color: AppColors.textMuted,
-                                      onPressed: () {
-                                        _citySearchController.clear();
-                                        _onCitySearchChanged('');
-                                      },
-                                    )
-                                  : null,
-                              filled: true,
-                              fillColor: AppColors.bgDarkStart,
-                              enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                                borderSide: const BorderSide(
-                                  color: AppColors.surfaceCardBorder,
-                                ),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                                borderSide: const BorderSide(
-                                  color: AppColors.goldPrimary,
-                                  width: 1.5,
-                                ),
-                              ),
-                              contentPadding: const EdgeInsets.symmetric(
-                                horizontal: 14,
-                                vertical: 12,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 8),
-
-                    // LISTBOX HASIL PENCARIAN (Bentuk Listbox Interaktif)
-                    if (_isSearchingCity) ...[
-                      Container(
-                        constraints: const BoxConstraints(maxHeight: 220),
-                        decoration: BoxDecoration(
-                          color: AppColors.bgDarkStart,
-                          borderRadius: BorderRadius.circular(12),
-                          border: Border.all(
-                            color: AppColors.goldPrimary.withAlpha(180),
-                            width: 1.2,
-                          ),
-                          boxShadow: const [
-                            BoxShadow(
-                              color: Colors.black54,
-                              blurRadius: 10,
-                              offset: Offset(0, 4),
-                            ),
-                          ],
-                        ),
-                        child: _searchedCities.isEmpty
-                            ? const Padding(
-                                padding: EdgeInsets.all(16),
-                                child: Center(
-                                  child: Text(
-                                    'Tidak ditemukan kota/kabupaten yang sesuai.\nAnda dapat memasukkan koordinat manual di bawah.',
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                      color: AppColors.textMuted,
-                                      fontSize: 12,
-                                    ),
-                                  ),
-                                ),
-                              )
-                            : ListView.separated(
-                                shrinkWrap: true,
-                                itemCount: _searchedCities.length,
-                                separatorBuilder: (context, i) => const Divider(
-                                  color: AppColors.surfaceCardBorder,
-                                  height: 1,
-                                ),
-                                itemBuilder: (context, index) {
-                                  final city = _searchedCities[index];
-                                  final isCurrent =
-                                      _cityName.toLowerCase() ==
-                                          city.name.toLowerCase() ||
-                                      _cityName.toLowerCase() ==
-                                          city.shortName.toLowerCase();
-                                  final tzLabel = city.timezone == 9.0
-                                      ? 'WIT'
-                                      : (city.timezone == 8.0 ? 'WITA' : 'WIB');
-
-                                  return InkWell(
-                                    onTap: () => _selectCity(city),
-                                    child: Container(
-                                      padding: const EdgeInsets.symmetric(
-                                        horizontal: 14,
-                                        vertical: 10,
-                                      ),
-                                      color: isCurrent
-                                          ? AppColors.goldPrimary.withAlpha(40)
-                                          : Colors.transparent,
-                                      child: Row(
-                                        children: [
-                                          Container(
-                                            padding: const EdgeInsets.symmetric(
-                                              horizontal: 6,
-                                              vertical: 2,
-                                            ),
-                                            decoration: BoxDecoration(
-                                              color: city.type == 'Kota'
-                                                  ? AppColors.emeraldPrimary
-                                                  : AppColors.bgDarkEnd,
-                                              borderRadius:
-                                                  BorderRadius.circular(4),
-                                              border: Border.all(
-                                                color: city.type == 'Kota'
-                                                    ? AppColors.emeraldLight
-                                                    : AppColors.textMuted,
-                                                width: 0.8,
-                                              ),
-                                            ),
-                                            child: Text(
-                                              city.type == 'Kota'
-                                                  ? 'KOTA'
-                                                  : 'KAB',
-                                              style: TextStyle(
-                                                fontSize: 9,
-                                                fontWeight: FontWeight.bold,
-                                                color: city.type == 'Kota'
-                                                    ? Colors.white
-                                                    : AppColors.goldLight,
-                                              ),
-                                            ),
-                                          ),
-                                          const SizedBox(width: 10),
-                                          Expanded(
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  city.name,
-                                                  style: const TextStyle(
-                                                    fontSize: 13,
-                                                    fontWeight: FontWeight.bold,
-                                                    color: AppColors.textLight,
-                                                  ),
-                                                ),
-                                                Text(
-                                                  '${city.province} • $tzLabel • Lat: ${city.latitude}, Lng: ${city.longitude}',
-                                                  style: const TextStyle(
-                                                    fontSize: 11,
-                                                    color: AppColors.textMuted,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          const Icon(
-                                            Icons.touch_app,
-                                            size: 16,
-                                            color: AppColors.goldPrimary,
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  );
-                                },
-                              ),
-                      ),
-                      const SizedBox(height: 10),
-                    ],
-
-                    // Preset Kota Cepat (Indramayu Default di Posisi Pertama)
-                    Wrap(
-                      spacing: 8,
-                      runSpacing: 6,
-                      children:
-                          [
-                            'Indramayu',
-                            'Jakarta Pusat',
-                            'Bandung',
-                            'Surabaya',
-                            'Semarang',
-                            'Yogyakarta',
-                            'Medan',
-                            'Makassar',
-                          ].map((cityName) {
-                            final city = IndonesiaCitiesData.allCities
-                                .firstWhere(
-                                  (c) =>
-                                      c.name.toLowerCase() ==
-                                      cityName.toLowerCase(),
-                                  orElse: () =>
-                                      IndonesiaCitiesData.allCities.first,
-                                );
-                            final isSel = _cityName.toLowerCase().contains(
-                              cityName.toLowerCase(),
-                            );
-                            return ActionChip(
-                              avatar: isSel
-                                  ? const Icon(
-                                      Icons.check,
-                                      size: 14,
-                                      color: AppColors.textDark,
-                                    )
-                                  : null,
-                              label: Text(
-                                cityName == 'Indramayu'
-                                    ? '📍 Indramayu (Default)'
-                                    : (cityName == 'Jakarta Pusat'
-                                          ? 'Jakarta'
-                                          : cityName),
-                                style: TextStyle(
-                                  fontSize: 11,
-                                  fontWeight: isSel
-                                      ? FontWeight.bold
-                                      : FontWeight.normal,
-                                  color: isSel
-                                      ? AppColors.textDark
-                                      : AppColors.textLight,
-                                ),
-                              ),
-                              backgroundColor: isSel
-                                  ? AppColors.goldPrimary
-                                  : AppColors.bgDarkStart,
-                              side: const BorderSide(
-                                color: AppColors.surfaceCardBorder,
-                              ),
-                              onPressed: () => _selectCity(city),
-                            );
-                          }).toList(),
-                    ),
-                    const SizedBox(height: 14),
-
-                    // Custom Coordinates & Timezone
-                    Row(
-                      children: [
-                        Expanded(
-                          child: _buildTextField(
-                            controller: _latitudeController,
-                            label: 'Latitude (Lintang)',
-                            icon: Icons.my_location,
-                            keyboardType: const TextInputType.numberWithOptions(
-                              decimal: true,
-                              signed: true,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: _buildTextField(
-                            controller: _longitudeController,
-                            label: 'Longitude (Bujur)',
-                            icon: Icons.my_location,
-                            keyboardType: const TextInputType.numberWithOptions(
-                              decimal: true,
-                              signed: true,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: _buildDropdown<double>(
-                            label: 'Zona Waktu',
-                            value: _selectedTimezone,
-                            items: const [
-                              DropdownMenuItem(
-                                value: 7.0,
-                                child: Text('WIB (UTC+7)'),
-                              ),
-                              DropdownMenuItem(
-                                value: 8.0,
-                                child: Text('WITA (UTC+8)'),
-                              ),
-                              DropdownMenuItem(
-                                value: 9.0,
-                                child: Text('WIT (UTC+9)'),
-                              ),
-                            ],
-                            onChanged: (val) {
-                              if (val != null) {
-                                setState(() => _selectedTimezone = val);
-                              }
-                            },
-                          ),
-                        ),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: _buildDropdown<int>(
-                            label: 'Koreksi Ihtiyat',
-                            value: _selectedIhtiyat,
-                            items: const [
-                              DropdownMenuItem(
-                                value: 1,
-                                child: Text('+1 Menit'),
-                              ),
-                              DropdownMenuItem(
-                                value: 2,
-                                child: Text('+2 Menit (Standar)'),
-                              ),
-                              DropdownMenuItem(
-                                value: 3,
-                                child: Text('+3 Menit'),
-                              ),
-                              DropdownMenuItem(
-                                value: 4,
-                                child: Text('+4 Menit'),
-                              ),
-                            ],
-                            onChanged: (val) {
-                              if (val != null) {
-                                setState(() => _selectedIhtiyat = val);
-                              }
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 20),
-
-                    // Jeda Waktu Iqomah (Menit)
-                    _buildSectionHeader(
-                      'Waktu Jeda Hitung Mundur Iqomah (Menit)',
-                    ),
-                    const SizedBox(height: 10),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: _buildIqomahCounter(
-                            'Subuh',
-                            _selectedSubuhIqomah,
-                            (val) => setState(() => _selectedSubuhIqomah = val),
-                          ),
-                        ),
-                        const SizedBox(width: 8),
-                        Expanded(
-                          child: _buildIqomahCounter(
-                            'Dzuhur',
-                            _selectedDzuhurIqomah,
-                            (val) =>
-                                setState(() => _selectedDzuhurIqomah = val),
-                          ),
-                        ),
-                        const SizedBox(width: 8),
-                        Expanded(
-                          child: _buildIqomahCounter(
-                            'Ashar',
-                            _selectedAsharIqomah,
-                            (val) => setState(() => _selectedAsharIqomah = val),
-                          ),
-                        ),
-                        const SizedBox(width: 8),
-                        Expanded(
-                          child: _buildIqomahCounter(
-                            'Maghrib',
-                            _selectedMaghribIqomah,
-                            (val) =>
-                                setState(() => _selectedMaghribIqomah = val),
-                          ),
-                        ),
-                        const SizedBox(width: 8),
-                        Expanded(
-                          child: _buildIqomahCounter(
-                            'Isya\'',
-                            _selectedIsyaIqomah,
-                            (val) => setState(() => _selectedIsyaIqomah = val),
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 12),
-                    // Switch Suara Beep
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 14,
-                        vertical: 6,
-                      ),
-                      decoration: BoxDecoration(
-                        color: AppColors.bgDarkStart,
-                        borderRadius: BorderRadius.circular(10),
-                        border: Border.all(color: AppColors.surfaceCardBorder),
-                      ),
-                      child: SwitchListTile(
-                        contentPadding: EdgeInsets.zero,
-                        activeThumbColor: AppColors.goldPrimary,
-                        title: const Text(
-                          'Suara Beep Peringatan (Mau Adzan & Mau Sholat)',
-                          style: TextStyle(
-                            fontSize: 13,
-                            fontWeight: FontWeight.bold,
-                            color: AppColors.textLight,
-                          ),
-                        ),
-                        subtitle: const Text(
-                          'Membunyikan nada beep panjang (4x 2 detik + 1x penutup 4 detik) saat masuk waktu adzan dan saat iqomah habis. Khusus sholat Jum\'at otomatis dinonaktifkan.',
-                          style: TextStyle(
-                            fontSize: 11,
-                            color: AppColors.textMuted,
-                          ),
-                        ),
-                        value: _enableBeepSound,
-                        onChanged: (val) =>
-                            setState(() => _enableBeepSound = val),
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-
-                    // Pengaturan Khusus Hari Jum'at
-                    _buildSectionHeader('Pengaturan Khusus Hari Jum\'at'),
-                    const SizedBox(height: 10),
-                    _buildFridaySettings(),
-                    const SizedBox(height: 20),
-
-                    // Running Text & Kalender Hijriyah
-                    _buildSectionHeader(
-                      'Teks Berjalan & Koreksi Kalender Hijriyah',
-                    ),
-                    const SizedBox(height: 10),
-                    _buildTextField(
-                      controller: _runningTextController,
-                      label: 'Isi Pesan Teks Berjalan (Marquee Bawah)',
-                      icon: Icons.subtitles,
-                      maxLines: 2,
-                    ),
-                    const SizedBox(height: 12),
-                    Row(
-                      children: [
-                        const Text(
-                          'Koreksi Kalender Hijriyah:',
-                          style: TextStyle(
-                            color: AppColors.textLight,
-                            fontSize: 13,
-                          ),
-                        ),
-                        const SizedBox(width: 14),
-                        ...[-1, 0, 1].map((adj) {
-                          final isSel = _selectedHijriAdj == adj;
-                          final label = adj == 0
-                              ? 'Normal (0)'
-                              : (adj > 0 ? '+$adj Hari' : '$adj Hari');
-                          return Padding(
-                            padding: const EdgeInsets.only(right: 8),
-                            child: ChoiceChip(
-                              label: Text(label),
-                              selected: isSel,
-                              onSelected: (_) =>
-                                  setState(() => _selectedHijriAdj = adj),
-                              selectedColor: AppColors.emeraldPrimary,
-                              backgroundColor: AppColors.bgDarkStart,
-                              labelStyle: TextStyle(
-                                color: isSel
-                                    ? AppColors.textLight
-                                    : AppColors.textMuted,
-                                fontWeight: isSel
-                                    ? FontWeight.bold
-                                    : FontWeight.normal,
-                              ),
-                            ),
-                          );
-                        }),
-                      ],
-                    ),
-                    const SizedBox(height: 24),
-
-                    // Pengaturan Gambar & Konten Slider
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        _buildSectionHeader(
-                          'Pengaturan Konten & Gambar Slider Poster',
-                        ),
-                        Row(
-                          children: [
-                            TextButton.icon(
-                              onPressed: _resetSlidesToDefault,
-                              icon: const Icon(Icons.refresh, size: 16),
-                              label: const Text(
-                                'Reset Default',
-                                style: TextStyle(fontSize: 12),
-                              ),
-                              style: TextButton.styleFrom(
-                                foregroundColor: AppColors.textMuted,
-                              ),
-                            ),
-                            const SizedBox(width: 8),
-                            ElevatedButton.icon(
-                              onPressed: _addNewSlide,
-                              icon: const Icon(
-                                Icons.add,
-                                size: 16,
-                                color: AppColors.textDark,
-                              ),
-                              label: const Text(
-                                'Tambah Slide',
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.bold,
-                                  color: AppColors.textDark,
-                                ),
-                              ),
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: AppColors.goldPrimary,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 10),
-                    ListView.separated(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: _editableSlides.length,
-                      separatorBuilder: (context, index) =>
-                          const SizedBox(height: 8),
-                      itemBuilder: (context, index) {
-                        final slide = _editableSlides[index];
-                        final hasImg =
-                            slide['imageUrl'] != null &&
-                            slide['imageUrl']!.isNotEmpty;
-
-                        return Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 14,
-                            vertical: 10,
-                          ),
-                          decoration: BoxDecoration(
-                            color: AppColors.bgDarkStart,
-                            borderRadius: BorderRadius.circular(12),
-                            border: Border.all(
-                              color: AppColors.surfaceCardBorder,
-                            ),
-                          ),
-                          child: Row(
-                            children: [
-                              Container(
-                                width: 36,
-                                height: 36,
-                                decoration: BoxDecoration(
-                                  color: AppColors.emeraldDark.withAlpha(140),
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                                child: Center(
-                                  child: Text(
-                                    '${index + 1}',
-                                    style: const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: AppColors.goldLight,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(width: 14),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Container(
-                                          padding: const EdgeInsets.symmetric(
-                                            horizontal: 8,
-                                            vertical: 2,
-                                          ),
-                                          decoration: BoxDecoration(
-                                            color: AppColors.emeraldDark,
-                                            borderRadius: BorderRadius.circular(
-                                              6,
-                                            ),
-                                          ),
-                                          child: Text(
-                                            slide['badge'] ?? 'INFO',
-                                            style: const TextStyle(
-                                              fontSize: 10,
-                                              fontWeight: FontWeight.bold,
-                                              color: AppColors.goldLight,
-                                            ),
-                                          ),
-                                        ),
-                                        if (hasImg) ...[
-                                          const SizedBox(width: 8),
-                                          Row(
-                                            children: [
-                                              const Icon(
-                                                Icons.image,
-                                                size: 14,
-                                                color: AppColors.goldPrimary,
-                                              ),
-                                              const SizedBox(width: 4),
-                                              Text(
-                                                slide['imageFit'] == 'fill'
-                                                    ? 'Gambar (Penuh Layout)'
-                                                    : (slide['imageFit'] ==
-                                                              'cover'
-                                                          ? 'Gambar (Zoom/Cover)'
-                                                          : 'Gambar (Utuh/Contain)'),
-                                                style: const TextStyle(
-                                                  fontSize: 10,
-                                                  color: AppColors.goldLight,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ],
-                                      ],
-                                    ),
-                                    const SizedBox(height: 4),
-                                    Text(
-                                      slide['title'] ?? '',
-                                      style: const TextStyle(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.bold,
-                                        color: AppColors.textLight,
-                                      ),
-                                    ),
-                                    Text(
-                                      slide['subtitle'] ?? '',
-                                      style: const TextStyle(
-                                        fontSize: 12,
-                                        color: AppColors.textMuted,
-                                      ),
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              IconButton(
-                                icon: const Icon(
-                                  Icons.edit,
-                                  color: AppColors.goldPrimary,
-                                  size: 20,
-                                ),
-                                tooltip: 'Edit Konten & Gambar Slide',
-                                onPressed: () => _showEditSlideDialog(index),
-                              ),
-                              IconButton(
-                                icon: const Icon(
-                                  Icons.delete_outline,
-                                  color: AppColors.alertRed,
-                                  size: 20,
-                                ),
-                                tooltip: 'Hapus Slide',
-                                onPressed: () => _removeSlide(index),
-                              ),
-                            ],
                           ),
                         );
                       },
                     ),
-                    const SizedBox(height: 24),
+            ),
+            const SizedBox(height: 8),
+          ],
 
-                    // Simulasi Layar Peringatan Full Screen
-                    _buildSectionHeader(
-                      'Simulasi & Uji Coba Tampilan Layar Penuh',
+          // Kota Cepat / Populer
+          Wrap(
+            spacing: 6,
+            runSpacing: 6,
+            children:
+                [
+                  'Indramayu',
+                  'Jakarta Pusat',
+                  'Surabaya',
+                  'Bandung',
+                  'Medan',
+                  'Makassar',
+                ].map((name) {
+                  final city = IndonesiaCitiesData.findByName(name);
+                  if (city == null) return const SizedBox.shrink();
+                  final isSelected = _cityName == city.name;
+                  return ActionChip(
+                    avatar: Icon(
+                      Icons.place,
+                      size: 14,
+                      color: isSelected
+                          ? AppColors.goldPrimary
+                          : AppColors.textMuted,
                     ),
-                    const SizedBox(height: 10),
+                    label: Text(city.name),
+                    labelStyle: TextStyle(
+                      fontSize: 11,
+                      color: isSelected
+                          ? AppColors.goldLight
+                          : AppColors.textLight,
+                      fontWeight: isSelected
+                          ? FontWeight.bold
+                          : FontWeight.normal,
+                    ),
+                    backgroundColor: isSelected
+                        ? AppColors.emeraldDark
+                        : AppColors.bgDarkStart,
+                    side: const BorderSide(
+                      color: AppColors.surfaceCardBorder,
+                    ),
+                    onPressed: () => _selectCity(city),
+                  );
+                }).toList(),
+          ),
+          const SizedBox(height: 14),
+
+          // Custom Coordinates & Timezone
+          Row(
+            children: [
+              Expanded(
+                child: _buildTextField(
+                  controller: _latitudeController,
+                  label: 'Latitude (Lintang)',
+                  icon: Icons.my_location,
+                  keyboardType: const TextInputType.numberWithOptions(
+                    decimal: true,
+                    signed: true,
+                  ),
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: _buildTextField(
+                  controller: _longitudeController,
+                  label: 'Longitude (Bujur)',
+                  icon: Icons.my_location,
+                  keyboardType: const TextInputType.numberWithOptions(
+                    decimal: true,
+                    signed: true,
+                  ),
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: _buildDropdown<double>(
+                  label: 'Zona Waktu',
+                  value: _selectedTimezone,
+                  items: const [
+                    DropdownMenuItem(
+                      value: 7.0,
+                      child: Text('WIB (UTC+7)'),
+                    ),
+                    DropdownMenuItem(
+                      value: 8.0,
+                      child: Text('WITA (UTC+8)'),
+                    ),
+                    DropdownMenuItem(
+                      value: 9.0,
+                      child: Text('WIT (UTC+9)'),
+                    ),
+                  ],
+                  onChanged: (val) {
+                    if (val != null) {
+                      setState(() => _selectedTimezone = val);
+                    }
+                  },
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: _buildDropdown<int>(
+                  label: 'Koreksi Ihtiyat',
+                  value: _selectedIhtiyat,
+                  items: const [
+                    DropdownMenuItem(
+                      value: 1,
+                      child: Text('+1 Menit'),
+                    ),
+                    DropdownMenuItem(
+                      value: 2,
+                      child: Text('+2 Menit (Standar)'),
+                    ),
+                    DropdownMenuItem(
+                      value: 3,
+                      child: Text('+3 Menit'),
+                    ),
+                    DropdownMenuItem(
+                      value: 4,
+                      child: Text('+4 Menit'),
+                    ),
+                  ],
+                  onChanged: (val) {
+                    if (val != null) {
+                      setState(() => _selectedIhtiyat = val);
+                    }
+                  },
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
+
+          // Koreksi Kalender Hijriyah
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+            decoration: BoxDecoration(
+              color: AppColors.bgDarkStart,
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(color: AppColors.surfaceCardBorder),
+            ),
+            child: Wrap(
+              crossAxisAlignment: WrapCrossAlignment.center,
+              spacing: 12,
+              runSpacing: 8,
+              children: [
+                const Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(
+                      Icons.calendar_month,
+                      color: AppColors.goldPrimary,
+                      size: 20,
+                    ),
+                    SizedBox(width: 8),
                     Text(
-                      'Klik salah satu tombol di bawah untuk melihat simulasi tampilan penuh di layar TV Anda:',
+                      'Koreksi Kalender Hijriyah:',
                       style: TextStyle(
+                        color: AppColors.textLight,
                         fontSize: 13,
-                        color: AppColors.textLight.withAlpha(200),
+                        fontWeight: FontWeight.w500,
                       ),
                     ),
-                    const SizedBox(height: 10),
-                    Wrap(
+                  ],
+                ),
+                ...[-1, 0, 1].map((adj) {
+                  final isSel = _selectedHijriAdj == adj;
+                  final label = adj == 0
+                      ? 'Normal (0)'
+                      : (adj > 0 ? '+$adj Hari' : '$adj Hari');
+                  return ChoiceChip(
+                    label: Text(label),
+                    selected: isSel,
+                    onSelected: (_) =>
+                        setState(() => _selectedHijriAdj = adj),
+                    selectedColor: AppColors.emeraldPrimary,
+                    backgroundColor: AppColors.bgDarkStart,
+                    labelStyle: TextStyle(
+                      color: isSel
+                          ? AppColors.textLight
+                          : AppColors.textMuted,
+                      fontWeight: isSel
+                          ? FontWeight.bold
+                          : FontWeight.normal,
+                    ),
+                  );
+                }),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // ================= TAB 2: WAKTU JEDA IQOMAH & BEEP =================
+  Widget _buildTabWaktuJeda() {
+    return SingleChildScrollView(
+      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _buildSectionHeader(
+            'Waktu Jeda Hitung Mundur Iqomah (Menit)',
+          ),
+          const SizedBox(height: 6),
+          const Text(
+            'Tentukan durasi jeda antara waktu adzan selesai hingga iqomah dimulai untuk masing-masing waktu sholat:',
+            style: TextStyle(fontSize: 12, color: AppColors.textMuted),
+          ),
+          const SizedBox(height: 12),
+          Row(
+            children: [
+              Expanded(
+                child: _buildIqomahCounter(
+                  'Subuh',
+                  _selectedSubuhIqomah,
+                  (val) => setState(() => _selectedSubuhIqomah = val),
+                ),
+              ),
+              const SizedBox(width: 8),
+              Expanded(
+                child: _buildIqomahCounter(
+                  'Dzuhur',
+                  _selectedDzuhurIqomah,
+                  (val) => setState(() => _selectedDzuhurIqomah = val),
+                ),
+              ),
+              const SizedBox(width: 8),
+              Expanded(
+                child: _buildIqomahCounter(
+                  'Ashar',
+                  _selectedAsharIqomah,
+                  (val) => setState(() => _selectedAsharIqomah = val),
+                ),
+              ),
+              const SizedBox(width: 8),
+              Expanded(
+                child: _buildIqomahCounter(
+                  'Maghrib',
+                  _selectedMaghribIqomah,
+                  (val) => setState(() => _selectedMaghribIqomah = val),
+                ),
+              ),
+              const SizedBox(width: 8),
+              Expanded(
+                child: _buildIqomahCounter(
+                  'Isya\'',
+                  _selectedIsyaIqomah,
+                  (val) => setState(() => _selectedIsyaIqomah = val),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 20),
+
+          // Nada Beep Peringatan
+          _buildSectionHeader('Nada Beep Peringatan Masuk Waktu Sholat & Iqomah'),
+          const SizedBox(height: 10),
+          Container(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 14,
+              vertical: 8,
+            ),
+            decoration: BoxDecoration(
+              color: AppColors.bgDarkStart,
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(color: AppColors.surfaceCardBorder),
+            ),
+            child: Material(
+              color: Colors.transparent,
+              child: Column(
+                children: [
+                  SwitchListTile(
+                    contentPadding: EdgeInsets.zero,
+                    activeThumbColor: AppColors.goldPrimary,
+                    title: const Text(
+                      'Aktifkan Suara Beep Peringatan',
+                      style: TextStyle(
+                        fontSize: 13,
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.textLight,
+                      ),
+                    ),
+                    subtitle: const Text(
+                      'Membunyikan nada beep panjang (4x 2 detik + 1x penutup 4 detik) saat masuk waktu adzan dan saat countdown iqomah habis. Khusus sholat Jum\'at otomatis dinonaktifkan.',
+                      style: TextStyle(
+                        fontSize: 11,
+                        color: AppColors.textMuted,
+                      ),
+                    ),
+                    value: _enableBeepSound,
+                    onChanged: (val) =>
+                        setState(() => _enableBeepSound = val),
+                  ),
+                  const Divider(color: AppColors.surfaceCardBorder),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 4),
+                    child: Wrap(
+                      alignment: WrapAlignment.spaceBetween,
+                      crossAxisAlignment: WrapCrossAlignment.center,
                       spacing: 12,
-                      runSpacing: 10,
+                      runSpacing: 8,
                       children: [
-                        ElevatedButton.icon(
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                            widget.onPreviewMode?.call(
-                              TVDisplayMode.adzanAlert,
-                            );
-                          },
-                          icon: const Icon(Icons.volume_up, size: 18),
-                          label: const Text('🔔 Uji Layar Adzan'),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: AppColors.alertOrange,
-                            foregroundColor: AppColors.textDark,
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 16,
-                              vertical: 12,
-                            ),
-                          ),
-                        ),
-                        ElevatedButton.icon(
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                            widget.onPreviewMode?.call(
-                              TVDisplayMode.iqomahCountdown,
-                            );
-                          },
-                          icon: const Icon(Icons.hourglass_bottom, size: 18),
-                          label: const Text('⏳ Uji Layar Iqomah'),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: AppColors.goldPrimary,
-                            foregroundColor: AppColors.textDark,
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 16,
-                              vertical: 12,
-                            ),
-                          ),
-                        ),
-                        ElevatedButton.icon(
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                            widget.onPreviewMode?.call(
-                              TVDisplayMode.prayingTime,
-                            );
-                          },
-                          icon: const Icon(Icons.phonelink_erase, size: 18),
-                          label: const Text('📵 Uji Layar Luruskan Shaf'),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: AppColors.emeraldPrimary,
-                            foregroundColor: Colors.white,
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 16,
-                              vertical: 12,
-                            ),
-                          ),
-                        ),
-                        ElevatedButton.icon(
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                            widget.onPreviewMode?.call(TVDisplayMode.khutbah);
-                          },
-                          icon: const Icon(Icons.mosque, size: 18),
-                          label: const Text('🕌 Uji Layar Khutbah Jum\'at'),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFF0F766E),
-                            foregroundColor: Colors.white,
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 16,
-                              vertical: 12,
-                            ),
-                          ),
+                        const Text(
+                          'Uji coba nada suara beep sekarang:',
+                          style: TextStyle(fontSize: 12, color: AppColors.textMuted),
                         ),
                         ElevatedButton.icon(
                           onPressed: () {
                             BeepSoundHelper.playTripleBeep();
                           },
-                          icon: const Icon(Icons.volume_up, size: 18),
-                          label: const Text('🔊 Uji Suara Beep (4x 2s + 1x 4s)'),
+                          icon: const Icon(Icons.volume_up, size: 16),
+                          label: const Text('Tes Suara Beep (4x 2s + 1x 4s)'),
                           style: ElevatedButton.styleFrom(
                             backgroundColor: const Color(0xFF4F46E5),
                             foregroundColor: Colors.white,
                             padding: const EdgeInsets.symmetric(
-                              horizontal: 16,
-                              vertical: 12,
+                              horizontal: 14,
+                              vertical: 10,
                             ),
                           ),
                         ),
                       ],
                     ),
-                    const SizedBox(height: 18),
-                    // Section: Backup & Transfer Pengaturan
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // ================= TAB 3: PENGATURAN JUM'AT =================
+  Widget _buildTabJumat() {
+    return SingleChildScrollView(
+      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _buildSectionHeader('Pengaturan Khusus Hari Jum\'at'),
+          const SizedBox(height: 6),
+          const Text(
+            'Atur durasi standby khutbah, penonaktifan iqomah otomatis, serta daftar nama petugas sholat Jum\'at:',
+            style: TextStyle(fontSize: 12, color: AppColors.textMuted),
+          ),
+          const SizedBox(height: 12),
+          _buildFridaySettings(),
+        ],
+      ),
+    );
+  }
+
+  // ================= TAB 4: TEKS BERJALAN =================
+  Widget _buildTabTextBerjalan() {
+    return SingleChildScrollView(
+      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _buildSectionHeader('Teks Berjalan Informasi Bawah Layar (Running Text)'),
+          const SizedBox(height: 6),
+          const Text(
+            'Pesan ini akan berjalan di bagian bawah layar TV secara terus-menerus sebagai pengingat atau pengumuman DKM:',
+            style: TextStyle(fontSize: 12, color: AppColors.textMuted),
+          ),
+          const SizedBox(height: 12),
+          _buildTextField(
+            controller: _runningTextController,
+            label: 'Isi Pesan Teks Berjalan (Marquee Bawah)',
+            icon: Icons.subtitles,
+            maxLines: 4,
+          ),
+          const SizedBox(height: 16),
+          Container(
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: AppColors.bgDarkStart,
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(color: AppColors.surfaceCardBorder),
+            ),
+            child: const Row(
+              children: [
+                Icon(Icons.info_outline, color: AppColors.goldPrimary, size: 20),
+                SizedBox(width: 10),
+                Expanded(
+                  child: Text(
+                    'Tips: Gunakan tanda pemisah titik bulat (•) atau tanda hubung (-) di antara setiap pesan agar teks berjalan lebih mudah dibaca oleh jamaah dari kejauhan.',
+                    style: TextStyle(fontSize: 11, color: AppColors.textMuted),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // ================= TAB 5: SLIDER POSTER =================
+  Widget _buildTabSlider() {
+    return SingleChildScrollView(
+      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(
+                child: _buildSectionHeader(
+                  'Pengaturan Konten & Gambar Slider Poster',
+                ),
+              ),
+              const SizedBox(width: 12),
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  TextButton.icon(
+                    onPressed: _resetSlidesToDefault,
+                    icon: const Icon(Icons.refresh, size: 16),
+                    label: const Text(
+                      'Reset Default',
+                      style: TextStyle(fontSize: 12),
+                    ),
+                    style: TextButton.styleFrom(
+                      foregroundColor: AppColors.textMuted,
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  ElevatedButton.icon(
+                    onPressed: _addNewSlide,
+                    icon: const Icon(
+                      Icons.add,
+                      size: 16,
+                      color: AppColors.textDark,
+                    ),
+                    label: const Text(
+                      'Tambah Slide',
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.textDark,
+                      ),
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.goldPrimary,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+          const SizedBox(height: 10),
+          ListView.separated(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: _editableSlides.length,
+            separatorBuilder: (context, index) => const SizedBox(height: 8),
+            itemBuilder: (context, index) {
+              final slide = _editableSlides[index];
+              final hasImg =
+                  slide['imageUrl'] != null && slide['imageUrl']!.isNotEmpty;
+
+              return Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 14,
+                  vertical: 10,
+                ),
+                decoration: BoxDecoration(
+                  color: AppColors.bgDarkStart,
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(
+                    color: AppColors.surfaceCardBorder,
+                  ),
+                ),
+                child: Row(
+                  children: [
                     Container(
-                      padding: const EdgeInsets.all(16),
+                      width: 36,
+                      height: 36,
                       decoration: BoxDecoration(
-                        color: AppColors.bgDarkStart,
-                        borderRadius: BorderRadius.circular(12),
-                        border: Border.all(
-                          color: AppColors.goldPrimary.withAlpha(80),
+                        color: AppColors.emeraldDark.withAlpha(140),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Center(
+                        child: Text(
+                          '${index + 1}',
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.goldLight,
+                          ),
                         ),
                       ),
+                    ),
+                    const SizedBox(width: 14),
+                    Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Row(
+                          Row(
                             children: [
-                              Icon(
-                                Icons.sync_alt,
-                                color: AppColors.goldPrimary,
-                                size: 20,
-                              ),
-                              SizedBox(width: 8),
-                              Text(
-                                'Pencadangan & Transfer Pengaturan (Anti-Reset di TV)',
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.bold,
-                                  color: AppColors.goldLight,
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 8,
+                                  vertical: 2,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: AppColors.emeraldDark,
+                                  borderRadius: BorderRadius.circular(
+                                    6,
+                                  ),
+                                ),
+                                child: Text(
+                                  slide['badge'] ?? 'INFO',
+                                  style: const TextStyle(
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.bold,
+                                    color: AppColors.goldLight,
+                                  ),
                                 ),
                               ),
+                              if (hasImg) ...[
+                                const SizedBox(width: 8),
+                                Row(
+                                  children: [
+                                    const Icon(
+                                      Icons.image,
+                                      size: 14,
+                                      color: AppColors.goldPrimary,
+                                    ),
+                                    const SizedBox(width: 4),
+                                    Text(
+                                      slide['imageFit'] == 'fill'
+                                          ? 'Gambar (Penuh Layout)'
+                                          : (slide['imageFit'] == 'cover'
+                                                ? 'Gambar (Zoom/Cover)'
+                                                : 'Gambar (Utuh/Contain)'),
+                                      style: const TextStyle(
+                                        fontSize: 10,
+                                        color: AppColors.goldLight,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
                             ],
                           ),
-                          const SizedBox(height: 6),
-                          const Text(
-                            'Ekspor pengaturan dari laptop/HP Anda ke flashdisk, atau buat link URL permanen agar Smart TV tidak pernah kembali ke pengaturan awal saat dimatikan/di-refresh.',
-                            style: TextStyle(
-                              fontSize: 11,
-                              color: AppColors.textMuted,
+                          const SizedBox(height: 4),
+                          Text(
+                            slide['title'] ?? '',
+                            style: const TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold,
+                              color: AppColors.textLight,
                             ),
                           ),
-                          const SizedBox(height: 14),
-                          Wrap(
-                            spacing: 12,
-                            runSpacing: 10,
-                            children: [
-                              ElevatedButton.icon(
-                                onPressed: _openImportDialog,
-                                icon: const Icon(Icons.file_download, size: 18),
-                                label: const Text(
-                                  '📥 Impor Pengaturan (JSON/Flashdisk)',
-                                ),
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: const Color(0xFF0284C7),
-                                  foregroundColor: Colors.white,
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 16,
-                                    vertical: 12,
-                                  ),
-                                ),
-                              ),
-                              ElevatedButton.icon(
-                                onPressed: _openExportDialog,
-                                icon: const Icon(Icons.file_upload, size: 18),
-                                label: const Text(
-                                  '📤 Ekspor Pengaturan (Unduh File)',
-                                ),
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: const Color(0xFF059669),
-                                  foregroundColor: Colors.white,
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 16,
-                                    vertical: 12,
-                                  ),
-                                ),
-                              ),
-                              ElevatedButton.icon(
-                                onPressed: _openPermanentTvLinkDialog,
-                                icon: const Icon(Icons.link, size: 18),
-                                label: const Text(
-                                  '🔗 Buat Link TV Permanen',
-                                ),
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: const Color(0xFFD97706),
-                                  foregroundColor: Colors.white,
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 16,
-                                    vertical: 12,
-                                  ),
-                                ),
-                              ),
-                            ],
+                          Text(
+                            slide['subtitle'] ?? '',
+                            style: const TextStyle(
+                              fontSize: 12,
+                              color: AppColors.textMuted,
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
                           ),
                         ],
                       ),
                     ),
+                    IconButton(
+                      icon: const Icon(
+                        Icons.edit,
+                        color: AppColors.goldPrimary,
+                        size: 20,
+                      ),
+                      tooltip: 'Edit Konten & Gambar Slide',
+                      onPressed: () => _showEditSlideDialog(index),
+                    ),
+                    IconButton(
+                      icon: const Icon(
+                        Icons.delete_outline,
+                        color: AppColors.alertRed,
+                        size: 20,
+                      ),
+                      tooltip: 'Hapus Slide',
+                      onPressed: () => _removeSlide(index),
+                    ),
                   ],
+                ),
+              );
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  // ================= TAB 6: UJI COBA =================
+  Widget _buildTabUjiCoba() {
+    return SingleChildScrollView(
+      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _buildSectionHeader('Simulasi & Uji Coba Tampilan Layar Penuh'),
+          const SizedBox(height: 8),
+          const Text(
+            'Klik salah satu tombol di bawah untuk melihat simulasi tampilan penuh di layar TV Anda:',
+            style: TextStyle(fontSize: 13, color: AppColors.textLight),
+          ),
+          const SizedBox(height: 16),
+          Wrap(
+            spacing: 14,
+            runSpacing: 14,
+            children: [
+              ElevatedButton.icon(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  widget.onPreviewMode?.call(
+                    TVDisplayMode.adzanAlert,
+                  );
+                },
+                icon: const Icon(Icons.volume_up, size: 20),
+                label: const Text('🔔 Uji Layar Adzan'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.alertOrange,
+                  foregroundColor: AppColors.textDark,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 20,
+                    vertical: 14,
+                  ),
                 ),
               ),
-            ),
-
-            const Divider(color: AppColors.surfaceCardBorder, height: 24),
-
-            // Action Buttons & Support Info
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                // Support Contact Info
-                Container(
+              ElevatedButton.icon(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  widget.onPreviewMode?.call(
+                    TVDisplayMode.iqomahCountdown,
+                  );
+                },
+                icon: const Icon(Icons.hourglass_bottom, size: 20),
+                label: const Text('⏳ Uji Layar Iqomah'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.goldPrimary,
+                  foregroundColor: AppColors.textDark,
                   padding: const EdgeInsets.symmetric(
-                    horizontal: 14,
-                    vertical: 8,
-                  ),
-                  decoration: BoxDecoration(
-                    color: AppColors.bgDarkStart,
-                    borderRadius: BorderRadius.circular(10),
-                    border: Border.all(color: AppColors.surfaceCardBorder),
-                  ),
-                  child: const Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(
-                        Icons.headset_mic_outlined,
-                        size: 16,
-                        color: AppColors.goldPrimary,
-                      ),
-                      SizedBox(width: 8),
-                      Text(
-                        'Support Ke 089660626800',
-                        style: TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.bold,
-                          color: AppColors.goldLight,
-                          letterSpacing: 0.5,
-                        ),
-                      ),
-                    ],
+                    horizontal: 20,
+                    vertical: 14,
                   ),
                 ),
-                Row(
-                  children: [
-                    TextButton(
-                      onPressed: () => Navigator.of(context).pop(),
-                      child: const Text(
-                        'Batal',
-                        style: TextStyle(color: AppColors.textMuted),
-                      ),
-                    ),
-                    const SizedBox(width: 12),
-                    ElevatedButton.icon(
-                      onPressed: _saveSettings,
-                      icon: const Icon(
-                        Icons.check_circle,
-                        color: AppColors.textDark,
-                      ),
-                      label: const Text(
-                        'Simpan Pengaturan',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: AppColors.textDark,
-                        ),
-                      ),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.goldPrimary,
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 24,
-                          vertical: 14,
-                        ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                      ),
-                    ),
-                  ],
+              ),
+              ElevatedButton.icon(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  widget.onPreviewMode?.call(
+                    TVDisplayMode.prayingTime,
+                  );
+                },
+                icon: const Icon(Icons.phonelink_erase, size: 20),
+                label: const Text('📵 Uji Layar Luruskan Shaf'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.emeraldPrimary,
+                  foregroundColor: Colors.white,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 20,
+                    vertical: 14,
+                  ),
                 ),
-              ],
+              ),
+              ElevatedButton.icon(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  widget.onPreviewMode?.call(TVDisplayMode.khutbah);
+                },
+                icon: const Icon(Icons.mosque, size: 20),
+                label: const Text('🕌 Uji Layar Khutbah Jum\'at'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFF0F766E),
+                  foregroundColor: Colors.white,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 20,
+                    vertical: 14,
+                  ),
+                ),
+              ),
+              ElevatedButton.icon(
+                onPressed: () {
+                  BeepSoundHelper.playTripleBeep();
+                },
+                icon: const Icon(Icons.volume_up, size: 20),
+                label: const Text('🔊 Uji Suara Beep (4x 2s + 1x 4s)'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFF4F46E5),
+                  foregroundColor: Colors.white,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 20,
+                    vertical: 14,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  // ================= TAB 7: PENCADANGAN & TRANSFER =================
+  Widget _buildTabPencadangan() {
+    return SingleChildScrollView(
+      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _buildSectionHeader(
+            'Pencadangan & Transfer Pengaturan (Anti-Reset di TV)',
+          ),
+          const SizedBox(height: 8),
+          const Text(
+            'Ekspor pengaturan dari laptop/HP Anda ke flashdisk, atau buat link URL permanen agar Smart TV tidak pernah kembali ke pengaturan awal saat dimatikan/di-refresh.',
+            style: TextStyle(
+              fontSize: 12,
+              color: AppColors.textMuted,
             ),
-          ],
-        ),
+          ),
+          const SizedBox(height: 18),
+          Wrap(
+            spacing: 14,
+            runSpacing: 14,
+            children: [
+              ElevatedButton.icon(
+                onPressed: _openImportDialog,
+                icon: const Icon(Icons.file_download, size: 20),
+                label: const Text(
+                  '📥 Impor Pengaturan (JSON/Flashdisk)',
+                ),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFF0284C7),
+                  foregroundColor: Colors.white,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 20,
+                    vertical: 14,
+                  ),
+                ),
+              ),
+              ElevatedButton.icon(
+                onPressed: _openExportDialog,
+                icon: const Icon(Icons.file_upload, size: 20),
+                label: const Text(
+                  '📤 Ekspor Pengaturan (Unduh File)',
+                ),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFF059669),
+                  foregroundColor: Colors.white,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 20,
+                    vertical: 14,
+                  ),
+                ),
+              ),
+              ElevatedButton.icon(
+                onPressed: _openPermanentTvLinkDialog,
+                icon: const Icon(Icons.link, size: 20),
+                label: const Text(
+                  '🔗 Buat Link TV Permanen',
+                ),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFFD97706),
+                  foregroundColor: Colors.white,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 20,
+                    vertical: 14,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }
@@ -2222,12 +2349,14 @@ class _SettingsDialogState extends State<SettingsDialog> {
           ),
         ),
         const SizedBox(width: 8),
-        Text(
-          title,
-          style: const TextStyle(
-            fontSize: 15,
-            fontWeight: FontWeight.bold,
-            color: AppColors.goldLight,
+        Expanded(
+          child: Text(
+            title,
+            style: const TextStyle(
+              fontSize: 15,
+              fontWeight: FontWeight.bold,
+              color: AppColors.goldLight,
+            ),
           ),
         ),
       ],
@@ -2297,6 +2426,7 @@ class _SettingsDialogState extends State<SettingsDialog> {
           dropdownColor: AppColors.bgDarkStart,
           style: const TextStyle(color: AppColors.textLight, fontSize: 13),
           isDense: true,
+          isExpanded: true,
         ),
       ),
     );
@@ -2313,9 +2443,11 @@ class _SettingsDialogState extends State<SettingsDialog> {
           width: 1.2,
         ),
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
+      child: Material(
+        color: Colors.transparent,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
           // Switch Matikan Iqomah Jum'at
           SwitchListTile(
             contentPadding: EdgeInsets.zero,
@@ -2435,6 +2567,7 @@ class _SettingsDialogState extends State<SettingsDialog> {
             ],
           ),
         ],
+      ),
       ),
     );
   }

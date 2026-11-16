@@ -4191,4 +4191,15 @@ class IndonesiaCitiesData {
 
     return [...prefixMatches, ...containsMatches, ...provinceMatches];
   }
+
+  /// Mencari kota berdasarkan nama persis (case-insensitive)
+  static IndonesiaCity? findByName(String name) {
+    final clean = name.trim().toLowerCase();
+    for (final c in allCities) {
+      if (c.name.toLowerCase() == clean) {
+        return c;
+      }
+    }
+    return null;
+  }
 }
