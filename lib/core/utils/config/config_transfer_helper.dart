@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 import '../../../features/settings/data/models/app_settings_model.dart';
 import '../../../features/settings/domain/entities/app_settings.dart';
 
@@ -25,9 +26,7 @@ class ConfigTransferHelper {
       if (decoded is Map<String, dynamic>) {
         return AppSettingsModel.fromJson(decoded);
       } else if (decoded is Map) {
-        return AppSettingsModel.fromJson(
-          Map<String, dynamic>.from(decoded),
-        );
+        return AppSettingsModel.fromJson(Map<String, dynamic>.from(decoded));
       }
     } catch (_) {}
     return null;
@@ -91,4 +90,3 @@ class ConfigTransferHelper {
     return copyToClipboardPlatform(text);
   }
 }
-

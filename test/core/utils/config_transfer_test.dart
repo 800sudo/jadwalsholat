@@ -35,37 +35,64 @@ void main() {
       enableBeepSound: true,
     );
 
-    test('exportToJson and importFromJson round-trip preserving all fields', () {
-      final jsonString = ConfigTransferHelper.exportToJson(testSettings);
-      expect(jsonString, isNotEmpty);
-      expect(jsonString.contains('Masjid Raya Al-Muhajirin'), isTrue);
+    test(
+      'exportToJson and importFromJson round-trip preserving all fields',
+      () {
+        final jsonString = ConfigTransferHelper.exportToJson(testSettings);
+        expect(jsonString, isNotEmpty);
+        expect(jsonString.contains('Masjid Raya Al-Muhajirin'), isTrue);
 
-      final imported = ConfigTransferHelper.importFromJson(jsonString);
-      expect(imported, isNotNull);
-      expect(imported!.mosqueName, equals(testSettings.mosqueName));
-      expect(imported.mosqueAddress, equals(testSettings.mosqueAddress));
-      expect(imported.cityName, equals(testSettings.cityName));
-      expect(imported.latitude, equals(testSettings.latitude));
-      expect(imported.longitude, equals(testSettings.longitude));
-      expect(imported.timezone, equals(testSettings.timezone));
-      expect(imported.ihtiyatMinutes, equals(testSettings.ihtiyatMinutes));
-      expect(imported.runningText, equals(testSettings.runningText));
-      expect(imported.iqomahSubuhMinutes, equals(testSettings.iqomahSubuhMinutes));
-      expect(imported.iqomahDzuhurMinutes, equals(testSettings.iqomahDzuhurMinutes));
-      expect(imported.iqomahAsharMinutes, equals(testSettings.iqomahAsharMinutes));
-      expect(imported.iqomahMaghribMinutes, equals(testSettings.iqomahMaghribMinutes));
-      expect(imported.iqomahIsyaMinutes, equals(testSettings.iqomahIsyaMinutes));
-      expect(imported.hijriAdjustmentDays, equals(testSettings.hijriAdjustmentDays));
-      expect(imported.fridayKhutbahMinutes, equals(testSettings.fridayKhutbahMinutes));
-      expect(imported.disableFridayIqomah, equals(testSettings.disableFridayIqomah));
-      expect(imported.fridayKhotib, equals(testSettings.fridayKhotib));
-      expect(imported.fridayImam, equals(testSettings.fridayImam));
-      expect(imported.fridayMuadzin, equals(testSettings.fridayMuadzin));
-      expect(imported.fridayBilal, equals(testSettings.fridayBilal));
-      expect(imported.enableBeepSound, equals(testSettings.enableBeepSound));
-      expect(imported.slides.length, equals(1));
-      expect(imported.slides[0]['title'], equals('Kajian Subuh'));
-    });
+        final imported = ConfigTransferHelper.importFromJson(jsonString);
+        expect(imported, isNotNull);
+        expect(imported!.mosqueName, equals(testSettings.mosqueName));
+        expect(imported.mosqueAddress, equals(testSettings.mosqueAddress));
+        expect(imported.cityName, equals(testSettings.cityName));
+        expect(imported.latitude, equals(testSettings.latitude));
+        expect(imported.longitude, equals(testSettings.longitude));
+        expect(imported.timezone, equals(testSettings.timezone));
+        expect(imported.ihtiyatMinutes, equals(testSettings.ihtiyatMinutes));
+        expect(imported.runningText, equals(testSettings.runningText));
+        expect(
+          imported.iqomahSubuhMinutes,
+          equals(testSettings.iqomahSubuhMinutes),
+        );
+        expect(
+          imported.iqomahDzuhurMinutes,
+          equals(testSettings.iqomahDzuhurMinutes),
+        );
+        expect(
+          imported.iqomahAsharMinutes,
+          equals(testSettings.iqomahAsharMinutes),
+        );
+        expect(
+          imported.iqomahMaghribMinutes,
+          equals(testSettings.iqomahMaghribMinutes),
+        );
+        expect(
+          imported.iqomahIsyaMinutes,
+          equals(testSettings.iqomahIsyaMinutes),
+        );
+        expect(
+          imported.hijriAdjustmentDays,
+          equals(testSettings.hijriAdjustmentDays),
+        );
+        expect(
+          imported.fridayKhutbahMinutes,
+          equals(testSettings.fridayKhutbahMinutes),
+        );
+        expect(
+          imported.disableFridayIqomah,
+          equals(testSettings.disableFridayIqomah),
+        );
+        expect(imported.fridayKhotib, equals(testSettings.fridayKhotib));
+        expect(imported.fridayImam, equals(testSettings.fridayImam));
+        expect(imported.fridayMuadzin, equals(testSettings.fridayMuadzin));
+        expect(imported.fridayBilal, equals(testSettings.fridayBilal));
+        expect(imported.enableBeepSound, equals(testSettings.enableBeepSound));
+        expect(imported.slides.length, equals(1));
+        expect(imported.slides[0]['title'], equals('Kajian Subuh'));
+      },
+    );
 
     test('importFromJson handles invalid JSON safely by returning null', () {
       expect(ConfigTransferHelper.importFromJson(''), isNull);
@@ -74,16 +101,21 @@ void main() {
       expect(ConfigTransferHelper.importFromJson('["array"]'), isNull);
     });
 
-    test('generatePermanentTvUrl produces valid URL with base64 config parameter', () {
-      final url = ConfigTransferHelper.generatePermanentTvUrl(
-        testSettings,
-        customBaseUrl: 'https://jadwal-sholat-ecru.vercel.app/',
-      );
-      expect(url.startsWith('https://jadwal-sholat-ecru.vercel.app/?config='), isTrue);
+    test(
+      'generatePermanentTvUrl produces valid URL with base64 config parameter',
+      () {
+        final url = ConfigTransferHelper.generatePermanentTvUrl(
+          testSettings,
+          customBaseUrl: 'https://jadwal-sholat-ecru.vercel.app/',
+        );
+        expect(
+          url.startsWith('https://jadwal-sholat-ecru.vercel.app/?config='),
+          isTrue,
+        );
 
-      final rawBase64 = url.split('?config=')[1];
-      expect(rawBase64, isNotEmpty);
-    });
+        final rawBase64 = url.split('?config=')[1];
+        expect(rawBase64, isNotEmpty);
+      },
+    );
   });
 }
-

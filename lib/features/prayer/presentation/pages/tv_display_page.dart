@@ -188,158 +188,160 @@ class _TVDisplayPageState extends State<TVDisplayPage> {
                 autofocus: true,
                 onKeyEvent: _handleKeyEvent,
                 child: Scaffold(
-                body: Container(
-                  width: double.infinity,
-                  height: double.infinity,
-                  decoration: const BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [
-                        AppColors.bgDarkStart,
-                        AppColors.bgDarkMid,
-                        AppColors.bgDarkEnd,
-                      ],
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
+                  body: Container(
+                    width: double.infinity,
+                    height: double.infinity,
+                    decoration: const BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [
+                          AppColors.bgDarkStart,
+                          AppColors.bgDarkMid,
+                          AppColors.bgDarkEnd,
+                        ],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      ),
                     ),
-                  ),
-                  child: Stack(
-                    children: [
-                      // Subtle Background Mosque Pattern Watermark
-                      Positioned(
-                        left: -50,
-                        top: -50,
-                        child: Icon(
-                          Icons.mosque,
-                          size: 380,
-                          color: AppColors.goldPrimary.withAlpha(8),
-                        ),
-                      ),
-                      Positioned(
-                        right: -50,
-                        bottom: 0,
-                        child: Icon(
-                          Icons.auto_awesome,
-                          size: 320,
-                          color: AppColors.emeraldLight.withAlpha(8),
-                        ),
-                      ),
-
-                      // Main UI Content in 16:9 Landscape Safe Area
-                      SafeArea(
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 24,
-                            vertical: 16,
+                    child: Stack(
+                      children: [
+                        // Subtle Background Mosque Pattern Watermark
+                        Positioned(
+                          left: -50,
+                          top: -50,
+                          child: Icon(
+                            Icons.mosque,
+                            size: 380,
+                            color: AppColors.goldPrimary.withAlpha(8),
                           ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                            children: [
-                              // 1. Header (Mosque Name, Date, Clock)
-                              HeaderClockWidget(
-                                currentTime: currentTime,
-                                settings: settings,
-                                onOpenSettings: () => _openSettings(settings),
-                              ),
-                              const SizedBox(height: 14),
+                        ),
+                        Positioned(
+                          right: -50,
+                          bottom: 0,
+                          child: Icon(
+                            Icons.auto_awesome,
+                            size: 320,
+                            color: AppColors.emeraldLight.withAlpha(8),
+                          ),
+                        ),
 
-                              // 2. Middle Section (Slide Info & Next Prayer Countdown, rasio 6:4)
-                              Expanded(
-                                flex: 5,
-                                child: Row(
-                                  children: [
-                                    // Left: Announcement / Hadith Slider (Flex 6)
-                                    Expanded(
-                                      flex: 6,
-                                      child: MediaSliderWidget(
-                                        slides: _resolveSlides(
-                                          settings,
-                                          currentTime,
+                        // Main UI Content in 16:9 Landscape Safe Area
+                        SafeArea(
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 24,
+                              vertical: 16,
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: [
+                                // 1. Header (Mosque Name, Date, Clock)
+                                HeaderClockWidget(
+                                  currentTime: currentTime,
+                                  settings: settings,
+                                  onOpenSettings: () => _openSettings(settings),
+                                ),
+                                const SizedBox(height: 14),
+
+                                // 2. Middle Section (Slide Info & Next Prayer Countdown, rasio 6:4)
+                                Expanded(
+                                  flex: 5,
+                                  child: Row(
+                                    children: [
+                                      // Left: Announcement / Hadith Slider (Flex 6)
+                                      Expanded(
+                                        flex: 6,
+                                        child: MediaSliderWidget(
+                                          slides: _resolveSlides(
+                                            settings,
+                                            currentTime,
+                                          ),
                                         ),
                                       ),
+                                      const SizedBox(width: 16),
+                                      // Right: Next Prayer Countdown (Flex 4)
+                                      Expanded(
+                                        flex: 4,
+                                        child: NextPrayerCountdownWidget(
+                                          nextPrayer: schedule.nextPrayer,
+                                          timeUntilNext: schedule.timeUntilNext,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                const SizedBox(height: 14),
+
+                                // 3. Bottom Prayer Times Cards Row
+                                PrayerTimeCardsWidget(
+                                  items: schedule.items,
+                                  activePrayer: schedule.activePrayer,
+                                  nextPrayer: schedule.nextPrayer,
+                                ),
+                                const SizedBox(height: 12),
+
+                                // 4. Running Text Marquee
+                                RunningTextWidget(text: settings.runningText),
+                              ],
+                            ),
+                          ),
+                        ),
+
+                        // 5. Adzan / Iqomah / Sholat Overlay (if active or previewed)
+                        if ((_manualPreviewMode ?? schedule.displayMode) !=
+                            TVDisplayMode.normal)
+                          Positioned.fill(
+                            child: Stack(
+                              children: [
+                                IqomahOverlayWidget(
+                                  displayMode:
+                                      _manualPreviewMode ??
+                                      schedule.displayMode,
+                                  activePrayer:
+                                      schedule.activePrayer ??
+                                      schedule.items[3],
+                                  iqomahRemaining:
+                                      schedule.iqomahRemaining > Duration.zero
+                                      ? schedule.iqomahRemaining
+                                      : const Duration(minutes: 8, seconds: 45),
+                                  settings: settings,
+                                ),
+                                // Close / Dismiss button
+                                Positioned(
+                                  top: 20,
+                                  right: 24,
+                                  child: ElevatedButton.icon(
+                                    onPressed: () {
+                                      setState(() {
+                                        _manualPreviewMode = null;
+                                      });
+                                    },
+                                    icon: const Icon(Icons.close, size: 18),
+                                    label: const Text(
+                                      'Tutup / Kembali ke Jadwal',
                                     ),
-                                    const SizedBox(width: 16),
-                                    // Right: Next Prayer Countdown (Flex 4)
-                                    Expanded(
-                                      flex: 4,
-                                      child: NextPrayerCountdownWidget(
-                                        nextPrayer: schedule.nextPrayer,
-                                        timeUntilNext: schedule.timeUntilNext,
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: AppColors.alertRed
+                                          .withAlpha(220),
+                                      foregroundColor: Colors.white,
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 16,
+                                        vertical: 10,
+                                      ),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(20),
                                       ),
                                     ),
-                                  ],
-                                ),
-                              ),
-                              const SizedBox(height: 14),
-
-                              // 3. Bottom Prayer Times Cards Row
-                              PrayerTimeCardsWidget(
-                                items: schedule.items,
-                                activePrayer: schedule.activePrayer,
-                                nextPrayer: schedule.nextPrayer,
-                              ),
-                              const SizedBox(height: 12),
-
-                              // 4. Running Text Marquee
-                              RunningTextWidget(text: settings.runningText),
-                            ],
-                          ),
-                        ),
-                      ),
-
-                      // 5. Adzan / Iqomah / Sholat Overlay (if active or previewed)
-                      if ((_manualPreviewMode ?? schedule.displayMode) !=
-                          TVDisplayMode.normal)
-                        Positioned.fill(
-                          child: Stack(
-                            children: [
-                              IqomahOverlayWidget(
-                                displayMode:
-                                    _manualPreviewMode ?? schedule.displayMode,
-                                activePrayer:
-                                    schedule.activePrayer ?? schedule.items[3],
-                                iqomahRemaining:
-                                    schedule.iqomahRemaining > Duration.zero
-                                    ? schedule.iqomahRemaining
-                                    : const Duration(minutes: 8, seconds: 45),
-                                settings: settings,
-                              ),
-                              // Close / Dismiss button
-                              Positioned(
-                                top: 20,
-                                right: 24,
-                                child: ElevatedButton.icon(
-                                  onPressed: () {
-                                    setState(() {
-                                      _manualPreviewMode = null;
-                                    });
-                                  },
-                                  icon: const Icon(Icons.close, size: 18),
-                                  label: const Text(
-                                    'Tutup / Kembali ke Jadwal',
-                                  ),
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: AppColors.alertRed
-                                        .withAlpha(220),
-                                    foregroundColor: Colors.white,
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 16,
-                                      vertical: 10,
-                                    ),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(20),
-                                    ),
                                   ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
-                        ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
-          );
+            );
           },
         );
       },

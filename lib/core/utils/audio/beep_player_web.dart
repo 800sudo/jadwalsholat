@@ -1,13 +1,15 @@
 // ignore_for_file: avoid_web_libraries_in_flutter
 
 import 'dart:async';
-import 'dart:js' as js;
+import 'dart:js_interop';
+
+@JS('eval')
+external JSAny? _jsEval(String code);
 
 class PlatformBeepPlayer {
   static void initUserInteraction() {
     try {
-      js.context.callMethod('eval', [
-        '''
+      _jsEval('''
         (function() {
           try {
             var ctx = window._appAudioCtx || new (window.AudioContext || window.webkitAudioContext)();
@@ -15,8 +17,7 @@ class PlatformBeepPlayer {
             if (ctx.state === 'suspended') { ctx.resume(); }
           } catch(e) {}
         })();
-        '''
-      ]);
+      ''');
     } catch (_) {}
   }
 
@@ -25,8 +26,7 @@ class PlatformBeepPlayer {
     int durationMs = 2000,
   }) async {
     try {
-      js.context.callMethod('eval', [
-        '''
+      _jsEval('''
         (function() {
           try {
             var ctx = window._appAudioCtx || new (window.AudioContext || window.webkitAudioContext)();
@@ -49,8 +49,7 @@ class PlatformBeepPlayer {
             osc.stop(stopTime);
           } catch(e) {}
         })();
-        '''
-      ]);
+      ''');
     } catch (_) {}
   }
 }

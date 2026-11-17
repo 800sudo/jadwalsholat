@@ -23,8 +23,9 @@ class MockSettingsRepo implements SettingsRepository {
 }
 
 void main() {
-  testWidgets('SettingsDialog renders all 7 tabs and switches correctly',
-      (tester) async {
+  testWidgets('SettingsDialog renders all 7 tabs and switches correctly', (
+    tester,
+  ) async {
     const settings = AppSettings(
       mosqueName: 'Masjid Agung Al-Falah',
       mosqueAddress: 'Jl. Merdeka No. 1',
@@ -88,7 +89,10 @@ void main() {
     // Tap Tab Waktu Jeda
     await tester.tap(find.text('Waktu Jeda'));
     await tester.pumpAndSettle();
-    expect(find.text('Waktu Jeda Hitung Mundur Iqomah (Menit)'), findsOneWidget);
+    expect(
+      find.text('Waktu Jeda Hitung Mundur Iqomah (Menit)'),
+      findsOneWidget,
+    );
 
     // Tap Tab Jum'at
     await tester.tap(find.text("Jum'at"));
@@ -98,24 +102,33 @@ void main() {
     // Tap Tab Teks Berjalan
     await tester.tap(find.text('Teks Berjalan'));
     await tester.pumpAndSettle();
-    expect(find.text('Teks Berjalan Informasi Bawah Layar (Running Text)'),
-        findsOneWidget);
+    expect(
+      find.text('Teks Berjalan Informasi Bawah Layar (Running Text)'),
+      findsOneWidget,
+    );
 
     // Tap Tab Slider
     await tester.tap(find.text('Slider'));
     await tester.pumpAndSettle();
-    expect(find.text('Pengaturan Konten & Gambar Slider Poster'), findsOneWidget);
+    expect(
+      find.text('Pengaturan Konten & Gambar Slider Poster'),
+      findsOneWidget,
+    );
 
     // Tap Tab Uji Coba
     await tester.tap(find.text('Uji Coba'));
     await tester.pumpAndSettle();
-    expect(find.text('Simulasi & Uji Coba Tampilan Layar Penuh'), findsOneWidget);
+    expect(
+      find.text('Simulasi & Uji Coba Tampilan Layar Penuh'),
+      findsOneWidget,
+    );
 
     // Tap Tab Pencadangan
     await tester.tap(find.text('Pencadangan'));
     await tester.pumpAndSettle();
     expect(
-        find.text('Pencadangan & Transfer Pengaturan (Anti-Reset di TV)'),
-        findsOneWidget);
+      find.text('Pencadangan & Transfer Pengaturan (Anti-Reset di TV)'),
+      findsOneWidget,
+    );
   });
 }

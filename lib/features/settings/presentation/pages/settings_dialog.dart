@@ -725,7 +725,9 @@ class _SettingsDialogState extends State<SettingsDialog> {
                     }
                   },
                   icon: const Icon(Icons.folder_open),
-                  label: const Text('📁 Pilih Berkas JSON (Flashdisk / Komputer)'),
+                  label: const Text(
+                    '📁 Pilih Berkas JSON (Flashdisk / Komputer)',
+                  ),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF0284C7),
                     foregroundColor: Colors.white,
@@ -741,7 +743,10 @@ class _SettingsDialogState extends State<SettingsDialog> {
                     padding: EdgeInsets.symmetric(horizontal: 10),
                     child: Text(
                       'ATAU',
-                      style: TextStyle(color: AppColors.textMuted, fontSize: 11),
+                      style: TextStyle(
+                        color: AppColors.textMuted,
+                        fontSize: 11,
+                      ),
                     ),
                   ),
                   Expanded(child: Divider(color: AppColors.surfaceCardBorder)),
@@ -772,7 +777,9 @@ class _SettingsDialogState extends State<SettingsDialog> {
                   fillColor: AppColors.bgDarkStart,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
-                    borderSide: const BorderSide(color: AppColors.surfaceCardBorder),
+                    borderSide: const BorderSide(
+                      color: AppColors.surfaceCardBorder,
+                    ),
                   ),
                 ),
               ),
@@ -782,7 +789,10 @@ class _SettingsDialogState extends State<SettingsDialog> {
         actions: [
           TextButton(
             onPressed: () => Navigator.of(ctx).pop(),
-            child: const Text('Batal', style: TextStyle(color: AppColors.textMuted)),
+            child: const Text(
+              'Batal',
+              style: TextStyle(color: AppColors.textMuted),
+            ),
           ),
           ElevatedButton(
             onPressed: () {
@@ -794,14 +804,18 @@ class _SettingsDialogState extends State<SettingsDialog> {
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(
                     backgroundColor: Colors.green,
-                    content: Text('✅ Pengaturan berhasil diimpor dari teks JSON!'),
+                    content: Text(
+                      '✅ Pengaturan berhasil diimpor dari teks JSON!',
+                    ),
                   ),
                 );
               } else {
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(
                     backgroundColor: Colors.red,
-                    content: Text('Format teks JSON tidak valid. Periksa kembali kodenya.'),
+                    content: Text(
+                      'Format teks JSON tidak valid. Periksa kembali kodenya.',
+                    ),
                   ),
                 );
               }
@@ -903,7 +917,10 @@ class _SettingsDialogState extends State<SettingsDialog> {
           ),
           TextButton(
             onPressed: () => Navigator.of(ctx).pop(),
-            child: const Text('Tutup', style: TextStyle(color: AppColors.textMuted)),
+            child: const Text(
+              'Tutup',
+              style: TextStyle(color: AppColors.textMuted),
+            ),
           ),
         ],
       ),
@@ -949,7 +966,9 @@ class _SettingsDialogState extends State<SettingsDialog> {
                 decoration: BoxDecoration(
                   color: AppColors.bgDarkStart,
                   borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: AppColors.goldPrimary.withAlpha(120)),
+                  border: Border.all(
+                    color: AppColors.goldPrimary.withAlpha(120),
+                  ),
                 ),
                 child: SelectableText(
                   link,
@@ -995,7 +1014,10 @@ class _SettingsDialogState extends State<SettingsDialog> {
           ),
           TextButton(
             onPressed: () => Navigator.of(ctx).pop(),
-            child: const Text('Tutup', style: TextStyle(color: AppColors.textMuted)),
+            child: const Text(
+              'Tutup',
+              style: TextStyle(color: AppColors.textMuted),
+            ),
           ),
         ],
       ),
@@ -1125,11 +1147,26 @@ class _SettingsDialogState extends State<SettingsDialog> {
                   tabs: const [
                     Tab(icon: Icon(Icons.mosque, size: 18), text: 'Masjid'),
                     Tab(icon: Icon(Icons.timer, size: 18), text: 'Waktu Jeda'),
-                    Tab(icon: Icon(Icons.calendar_today, size: 18), text: "Jum'at"),
-                    Tab(icon: Icon(Icons.subtitles, size: 18), text: 'Teks Berjalan'),
-                    Tab(icon: Icon(Icons.view_carousel, size: 18), text: 'Slider'),
-                    Tab(icon: Icon(Icons.play_circle_outline, size: 18), text: 'Uji Coba'),
-                    Tab(icon: Icon(Icons.backup, size: 18), text: 'Pencadangan'),
+                    Tab(
+                      icon: Icon(Icons.calendar_today, size: 18),
+                      text: "Jum'at",
+                    ),
+                    Tab(
+                      icon: Icon(Icons.subtitles, size: 18),
+                      text: 'Teks Berjalan',
+                    ),
+                    Tab(
+                      icon: Icon(Icons.view_carousel, size: 18),
+                      text: 'Slider',
+                    ),
+                    Tab(
+                      icon: Icon(Icons.play_circle_outline, size: 18),
+                      text: 'Uji Coba',
+                    ),
+                    Tab(
+                      icon: Icon(Icons.backup, size: 18),
+                      text: 'Pencadangan',
+                    ),
                   ],
                 ),
               ),
@@ -1271,10 +1308,7 @@ class _SettingsDialogState extends State<SettingsDialog> {
 
           // Card Lokasi Terpilih Saat Ini
           Container(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 14,
-              vertical: 10,
-            ),
+            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
             decoration: BoxDecoration(
               color: AppColors.emeraldDark.withAlpha(120),
               borderRadius: BorderRadius.circular(12),
@@ -1324,9 +1358,7 @@ class _SettingsDialogState extends State<SettingsDialog> {
                   decoration: BoxDecoration(
                     color: AppColors.bgDarkStart,
                     borderRadius: BorderRadius.circular(8),
-                    border: Border.all(
-                      color: AppColors.surfaceCardBorder,
-                    ),
+                    border: Border.all(color: AppColors.surfaceCardBorder),
                   ),
                   child: Text(
                     _selectedTimezone == 9.0
@@ -1363,10 +1395,7 @@ class _SettingsDialogState extends State<SettingsDialog> {
                     ...IndonesiaCitiesData.allProvinces.map((prov) {
                       return DropdownMenuItem(
                         value: prov,
-                        child: Text(
-                          prov,
-                          overflow: TextOverflow.ellipsis,
-                        ),
+                        child: Text(prov, overflow: TextOverflow.ellipsis),
                       );
                     }),
                   ],
@@ -1387,18 +1416,16 @@ class _SettingsDialogState extends State<SettingsDialog> {
                     setState(() {
                       _isSearchingCity = true;
                       if (_searchedCities.isEmpty) {
-                        _searchedCities =
-                            IndonesiaCitiesData.searchCities(
-                              _citySearchController.text,
-                              provinceFilter: _selectedProvinceFilter,
-                            );
+                        _searchedCities = IndonesiaCitiesData.searchCities(
+                          _citySearchController.text,
+                          provinceFilter: _selectedProvinceFilter,
+                        );
                       }
                     });
                   },
                   decoration: InputDecoration(
                     labelText: 'Cari Kota / Kabupaten Seluruh Indonesia',
-                    hintText:
-                        'Ketik nama kota (misal: IN -> Indramayu, Indragiri...)',
+                    hintText: 'Ketik nama kota (misal: IN -> Indramayu, Indragiri...)',
                     hintStyle: TextStyle(
                       color: AppColors.textMuted.withAlpha(120),
                       fontSize: 12,
@@ -1591,9 +1618,7 @@ class _SettingsDialogState extends State<SettingsDialog> {
                     backgroundColor: isSelected
                         ? AppColors.emeraldDark
                         : AppColors.bgDarkStart,
-                    side: const BorderSide(
-                      color: AppColors.surfaceCardBorder,
-                    ),
+                    side: const BorderSide(color: AppColors.surfaceCardBorder),
                     onPressed: () => _selectCity(city),
                   );
                 }).toList(),
@@ -1632,18 +1657,9 @@ class _SettingsDialogState extends State<SettingsDialog> {
                   label: 'Zona Waktu',
                   value: _selectedTimezone,
                   items: const [
-                    DropdownMenuItem(
-                      value: 7.0,
-                      child: Text('WIB (UTC+7)'),
-                    ),
-                    DropdownMenuItem(
-                      value: 8.0,
-                      child: Text('WITA (UTC+8)'),
-                    ),
-                    DropdownMenuItem(
-                      value: 9.0,
-                      child: Text('WIT (UTC+9)'),
-                    ),
+                    DropdownMenuItem(value: 7.0, child: Text('WIB (UTC+7)')),
+                    DropdownMenuItem(value: 8.0, child: Text('WITA (UTC+8)')),
+                    DropdownMenuItem(value: 9.0, child: Text('WIT (UTC+9)')),
                   ],
                   onChanged: (val) {
                     if (val != null) {
@@ -1658,22 +1674,13 @@ class _SettingsDialogState extends State<SettingsDialog> {
                   label: 'Koreksi Ihtiyat',
                   value: _selectedIhtiyat,
                   items: const [
-                    DropdownMenuItem(
-                      value: 1,
-                      child: Text('+1 Menit'),
-                    ),
+                    DropdownMenuItem(value: 1, child: Text('+1 Menit')),
                     DropdownMenuItem(
                       value: 2,
                       child: Text('+2 Menit (Standar)'),
                     ),
-                    DropdownMenuItem(
-                      value: 3,
-                      child: Text('+3 Menit'),
-                    ),
-                    DropdownMenuItem(
-                      value: 4,
-                      child: Text('+4 Menit'),
-                    ),
+                    DropdownMenuItem(value: 3, child: Text('+3 Menit')),
+                    DropdownMenuItem(value: 4, child: Text('+4 Menit')),
                   ],
                   onChanged: (val) {
                     if (val != null) {
@@ -1726,17 +1733,12 @@ class _SettingsDialogState extends State<SettingsDialog> {
                   return ChoiceChip(
                     label: Text(label),
                     selected: isSel,
-                    onSelected: (_) =>
-                        setState(() => _selectedHijriAdj = adj),
+                    onSelected: (_) => setState(() => _selectedHijriAdj = adj),
                     selectedColor: AppColors.emeraldPrimary,
                     backgroundColor: AppColors.bgDarkStart,
                     labelStyle: TextStyle(
-                      color: isSel
-                          ? AppColors.textLight
-                          : AppColors.textMuted,
-                      fontWeight: isSel
-                          ? FontWeight.bold
-                          : FontWeight.normal,
+                      color: isSel ? AppColors.textLight : AppColors.textMuted,
+                      fontWeight: isSel ? FontWeight.bold : FontWeight.normal,
                     ),
                   );
                 }),
@@ -1755,9 +1757,7 @@ class _SettingsDialogState extends State<SettingsDialog> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildSectionHeader(
-            'Waktu Jeda Hitung Mundur Iqomah (Menit)',
-          ),
+          _buildSectionHeader('Waktu Jeda Hitung Mundur Iqomah (Menit)'),
           const SizedBox(height: 6),
           const Text(
             'Tentukan durasi jeda antara waktu adzan selesai hingga iqomah dimulai untuk masing-masing waktu sholat:',
@@ -1810,13 +1810,12 @@ class _SettingsDialogState extends State<SettingsDialog> {
           const SizedBox(height: 20),
 
           // Nada Beep Peringatan
-          _buildSectionHeader('Nada Beep Peringatan Masuk Waktu Sholat & Iqomah'),
+          _buildSectionHeader(
+            'Nada Beep Peringatan Masuk Waktu Sholat & Iqomah',
+          ),
           const SizedBox(height: 10),
           Container(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 14,
-              vertical: 8,
-            ),
+            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
             decoration: BoxDecoration(
               color: AppColors.bgDarkStart,
               borderRadius: BorderRadius.circular(10),
@@ -1845,8 +1844,7 @@ class _SettingsDialogState extends State<SettingsDialog> {
                       ),
                     ),
                     value: _enableBeepSound,
-                    onChanged: (val) =>
-                        setState(() => _enableBeepSound = val),
+                    onChanged: (val) => setState(() => _enableBeepSound = val),
                   ),
                   const Divider(color: AppColors.surfaceCardBorder),
                   Padding(
@@ -1859,7 +1857,10 @@ class _SettingsDialogState extends State<SettingsDialog> {
                       children: [
                         const Text(
                           'Uji coba nada suara beep sekarang:',
-                          style: TextStyle(fontSize: 12, color: AppColors.textMuted),
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: AppColors.textMuted,
+                          ),
                         ),
                         ElevatedButton.icon(
                           onPressed: () {
@@ -1915,7 +1916,9 @@ class _SettingsDialogState extends State<SettingsDialog> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildSectionHeader('Teks Berjalan Informasi Bawah Layar (Running Text)'),
+          _buildSectionHeader(
+            'Teks Berjalan Informasi Bawah Layar (Running Text)',
+          ),
           const SizedBox(height: 6),
           const Text(
             'Pesan ini akan berjalan di bagian bawah layar TV secara terus-menerus sebagai pengingat atau pengumuman DKM:',
@@ -1938,7 +1941,11 @@ class _SettingsDialogState extends State<SettingsDialog> {
             ),
             child: const Row(
               children: [
-                Icon(Icons.info_outline, color: AppColors.goldPrimary, size: 20),
+                Icon(
+                  Icons.info_outline,
+                  color: AppColors.goldPrimary,
+                  size: 20,
+                ),
                 SizedBox(width: 10),
                 Expanded(
                   child: Text(
@@ -2027,9 +2034,7 @@ class _SettingsDialogState extends State<SettingsDialog> {
                 decoration: BoxDecoration(
                   color: AppColors.bgDarkStart,
                   borderRadius: BorderRadius.circular(12),
-                  border: Border.all(
-                    color: AppColors.surfaceCardBorder,
-                  ),
+                  border: Border.all(color: AppColors.surfaceCardBorder),
                 ),
                 child: Row(
                   children: [
@@ -2064,9 +2069,7 @@ class _SettingsDialogState extends State<SettingsDialog> {
                                 ),
                                 decoration: BoxDecoration(
                                   color: AppColors.emeraldDark,
-                                  borderRadius: BorderRadius.circular(
-                                    6,
-                                  ),
+                                  borderRadius: BorderRadius.circular(6),
                                 ),
                                 child: Text(
                                   slide['badge'] ?? 'INFO',
@@ -2173,9 +2176,7 @@ class _SettingsDialogState extends State<SettingsDialog> {
               ElevatedButton.icon(
                 onPressed: () {
                   Navigator.of(context).pop();
-                  widget.onPreviewMode?.call(
-                    TVDisplayMode.adzanAlert,
-                  );
+                  widget.onPreviewMode?.call(TVDisplayMode.adzanAlert);
                 },
                 icon: const Icon(Icons.volume_up, size: 20),
                 label: const Text('🔔 Uji Layar Adzan'),
@@ -2191,9 +2192,7 @@ class _SettingsDialogState extends State<SettingsDialog> {
               ElevatedButton.icon(
                 onPressed: () {
                   Navigator.of(context).pop();
-                  widget.onPreviewMode?.call(
-                    TVDisplayMode.iqomahCountdown,
-                  );
+                  widget.onPreviewMode?.call(TVDisplayMode.iqomahCountdown);
                 },
                 icon: const Icon(Icons.hourglass_bottom, size: 20),
                 label: const Text('⏳ Uji Layar Iqomah'),
@@ -2209,9 +2208,7 @@ class _SettingsDialogState extends State<SettingsDialog> {
               ElevatedButton.icon(
                 onPressed: () {
                   Navigator.of(context).pop();
-                  widget.onPreviewMode?.call(
-                    TVDisplayMode.prayingTime,
-                  );
+                  widget.onPreviewMode?.call(TVDisplayMode.prayingTime);
                 },
                 icon: const Icon(Icons.phonelink_erase, size: 20),
                 label: const Text('📵 Uji Layar Luruskan Shaf'),
@@ -2275,10 +2272,7 @@ class _SettingsDialogState extends State<SettingsDialog> {
           const SizedBox(height: 8),
           const Text(
             'Ekspor pengaturan dari laptop/HP Anda ke flashdisk, atau buat link URL permanen agar Smart TV tidak pernah kembali ke pengaturan awal saat dimatikan/di-refresh.',
-            style: TextStyle(
-              fontSize: 12,
-              color: AppColors.textMuted,
-            ),
+            style: TextStyle(fontSize: 12, color: AppColors.textMuted),
           ),
           const SizedBox(height: 18),
           Wrap(
@@ -2288,9 +2282,7 @@ class _SettingsDialogState extends State<SettingsDialog> {
               ElevatedButton.icon(
                 onPressed: _openImportDialog,
                 icon: const Icon(Icons.file_download, size: 20),
-                label: const Text(
-                  '📥 Impor Pengaturan (JSON/Flashdisk)',
-                ),
+                label: const Text('📥 Impor Pengaturan (JSON/Flashdisk)'),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFF0284C7),
                   foregroundColor: Colors.white,
@@ -2303,9 +2295,7 @@ class _SettingsDialogState extends State<SettingsDialog> {
               ElevatedButton.icon(
                 onPressed: _openExportDialog,
                 icon: const Icon(Icons.file_upload, size: 20),
-                label: const Text(
-                  '📤 Ekspor Pengaturan (Unduh File)',
-                ),
+                label: const Text('📤 Ekspor Pengaturan (Unduh File)'),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFF059669),
                   foregroundColor: Colors.white,
@@ -2318,9 +2308,7 @@ class _SettingsDialogState extends State<SettingsDialog> {
               ElevatedButton.icon(
                 onPressed: _openPermanentTvLinkDialog,
                 icon: const Icon(Icons.link, size: 20),
-                label: const Text(
-                  '🔗 Buat Link TV Permanen',
-                ),
+                label: const Text('🔗 Buat Link TV Permanen'),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFFD97706),
                   foregroundColor: Colors.white,
@@ -2448,126 +2436,127 @@ class _SettingsDialogState extends State<SettingsDialog> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-          // Switch Matikan Iqomah Jum'at
-          SwitchListTile(
-            contentPadding: EdgeInsets.zero,
-            activeThumbColor: AppColors.goldPrimary,
-            title: const Text(
-              'Ganti Iqomah dengan Layar Khutbah Jum\'at',
-              style: TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.bold,
-                color: AppColors.textLight,
-              ),
-            ),
-            subtitle: const Text(
-              'Jika aktif, waktu Dzuhur di hari Jum\'at akan langsung beralih ke mode Standby Khutbah (Layar Tenang & Matikan HP) tanpa hitung mundur iqomah biasa.',
-              style: TextStyle(fontSize: 12, color: AppColors.textMuted),
-            ),
-            value: _disableFridayIqomah,
-            onChanged: (val) => setState(() => _disableFridayIqomah = val),
-          ),
-          const Divider(color: AppColors.surfaceCardBorder, height: 20),
-
-          // Durasi Khutbah
-          Row(
-            children: [
-              const Expanded(
-                flex: 3,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Perkiraan Durasi Khutbah Jum\'at',
-                      style: TextStyle(
-                        fontSize: 13,
-                        fontWeight: FontWeight.bold,
-                        color: AppColors.textLight,
-                      ),
-                    ),
-                    SizedBox(height: 2),
-                    Text(
-                      'Durasi layar tenang khutbah sebelum masuk waktu sholat berjamaah',
-                      style: TextStyle(
-                        fontSize: 11,
-                        color: AppColors.textMuted,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                flex: 2,
-                child: _buildIqomahCounter(
-                  'Durasi Khutbah',
-                  _selectedFridayKhutbahMinutes,
-                  (val) => setState(() => _selectedFridayKhutbahMinutes = val),
-                  minValue: 10,
-                  maxValue: 90,
-                ),
-              ),
-            ],
-          ),
-          const Divider(color: AppColors.surfaceCardBorder, height: 24),
-
-          // Petugas Sholat Jum'at Pekan Ini
-          const Row(
-            children: [
-              Icon(Icons.badge, color: AppColors.goldPrimary, size: 18),
-              SizedBox(width: 8),
-              Text(
-                'Jadwal Petugas Sholat Jum\'at Pekan Ini',
+            // Switch Matikan Iqomah Jum'at
+            SwitchListTile(
+              contentPadding: EdgeInsets.zero,
+              activeThumbColor: AppColors.goldPrimary,
+              title: const Text(
+                'Ganti Iqomah dengan Layar Khutbah Jum\'at',
                 style: TextStyle(
-                  fontSize: 13,
+                  fontSize: 14,
                   fontWeight: FontWeight.bold,
-                  color: AppColors.goldLight,
+                  color: AppColors.textLight,
                 ),
               ),
-            ],
-          ),
-          const SizedBox(height: 10),
-          Row(
-            children: [
-              Expanded(
-                child: _buildTextField(
-                  controller: _fridayKhotibController,
-                  label: 'Khotib Jum\'at',
-                  icon: Icons.record_voice_over,
-                ),
+              subtitle: const Text(
+                'Jika aktif, waktu Dzuhur di hari Jum\'at akan langsung beralih ke mode Standby Khutbah (Layar Tenang & Matikan HP) tanpa hitung mundur iqomah biasa.',
+                style: TextStyle(fontSize: 12, color: AppColors.textMuted),
               ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: _buildTextField(
-                  controller: _fridayImamController,
-                  label: 'Imam Jum\'at',
-                  icon: Icons.person,
+              value: _disableFridayIqomah,
+              onChanged: (val) => setState(() => _disableFridayIqomah = val),
+            ),
+            const Divider(color: AppColors.surfaceCardBorder, height: 20),
+
+            // Durasi Khutbah
+            Row(
+              children: [
+                const Expanded(
+                  flex: 3,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Perkiraan Durasi Khutbah Jum\'at',
+                        style: TextStyle(
+                          fontSize: 13,
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.textLight,
+                        ),
+                      ),
+                      SizedBox(height: 2),
+                      Text(
+                        'Durasi layar tenang khutbah sebelum masuk waktu sholat berjamaah',
+                        style: TextStyle(
+                          fontSize: 11,
+                          color: AppColors.textMuted,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 10),
-          Row(
-            children: [
-              Expanded(
-                child: _buildTextField(
-                  controller: _fridayMuadzinController,
-                  label: 'Muadzin',
-                  icon: Icons.volume_up,
+                const SizedBox(width: 12),
+                Expanded(
+                  flex: 2,
+                  child: _buildIqomahCounter(
+                    'Durasi Khutbah',
+                    _selectedFridayKhutbahMinutes,
+                    (val) =>
+                        setState(() => _selectedFridayKhutbahMinutes = val),
+                    minValue: 10,
+                    maxValue: 90,
+                  ),
                 ),
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: _buildTextField(
-                  controller: _fridayBilalController,
-                  label: 'Bilal / Muraqqi',
-                  icon: Icons.notifications_active,
+              ],
+            ),
+            const Divider(color: AppColors.surfaceCardBorder, height: 24),
+
+            // Petugas Sholat Jum'at Pekan Ini
+            const Row(
+              children: [
+                Icon(Icons.badge, color: AppColors.goldPrimary, size: 18),
+                SizedBox(width: 8),
+                Text(
+                  'Jadwal Petugas Sholat Jum\'at Pekan Ini',
+                  style: TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.goldLight,
+                  ),
                 ),
-              ),
-            ],
-          ),
-        ],
-      ),
+              ],
+            ),
+            const SizedBox(height: 10),
+            Row(
+              children: [
+                Expanded(
+                  child: _buildTextField(
+                    controller: _fridayKhotibController,
+                    label: 'Khotib Jum\'at',
+                    icon: Icons.record_voice_over,
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: _buildTextField(
+                    controller: _fridayImamController,
+                    label: 'Imam Jum\'at',
+                    icon: Icons.person,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 10),
+            Row(
+              children: [
+                Expanded(
+                  child: _buildTextField(
+                    controller: _fridayMuadzinController,
+                    label: 'Muadzin',
+                    icon: Icons.volume_up,
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: _buildTextField(
+                    controller: _fridayBilalController,
+                    label: 'Bilal / Muraqqi',
+                    icon: Icons.notifications_active,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
