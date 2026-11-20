@@ -422,17 +422,6 @@ class IqomahOverlayWidget extends StatelessWidget {
     BuildContext context,
     BoxConstraints constraints,
   ) {
-    final khotib = settings?.fridayKhotib.trim() ?? '';
-    final imam = settings?.fridayImam.trim() ?? '';
-    final muadzin = settings?.fridayMuadzin.trim() ?? '';
-    final bilal = settings?.fridayBilal.trim() ?? '';
-
-    final hasPetugas =
-        khotib.isNotEmpty ||
-        imam.isNotEmpty ||
-        muadzin.isNotEmpty ||
-        bilal.isNotEmpty;
-
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
@@ -440,7 +429,7 @@ class IqomahOverlayWidget extends StatelessWidget {
         FittedBox(
           fit: BoxFit.scaleDown,
           child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 36, vertical: 12),
+            padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 14),
             decoration: BoxDecoration(
               gradient: const LinearGradient(
                 colors: [AppColors.emeraldPrimary, AppColors.goldPrimary],
@@ -456,14 +445,14 @@ class IqomahOverlayWidget extends StatelessWidget {
             child: const Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(Icons.mosque, color: AppColors.textDark, size: 28),
-                SizedBox(width: 12),
+                Icon(Icons.mosque, color: AppColors.textDark, size: 30),
+                SizedBox(width: 14),
                 Text(
                   'KHUTBAH JUM\'AT BERLANGSUNG',
                   style: TextStyle(
-                    fontSize: 22,
+                    fontSize: 26,
                     fontWeight: FontWeight.w900,
-                    letterSpacing: 3.0,
+                    letterSpacing: 3.5,
                     color: AppColors.textDark,
                   ),
                 ),
@@ -472,37 +461,21 @@ class IqomahOverlayWidget extends StatelessWidget {
           ),
         ),
 
-        // Arabic Calligraphy / Adab Khutbah
+        // Arabic Calligraphy / Adab Khutbah (Diperbesar)
         const FittedBox(
           fit: BoxFit.scaleDown,
           child: Text(
             'أَنْصِتُوا وَاسْمَعُوا وَأَطِيعُوا رَحِمَكُمُ اللهُ',
             textAlign: TextAlign.center,
             style: TextStyle(
-              fontSize: 48,
+              fontSize: 64,
               fontWeight: FontWeight.bold,
               color: AppColors.goldLight,
-              letterSpacing: 2,
-              shadows: [Shadow(color: AppColors.goldPrimary, blurRadius: 25)],
-            ),
-          ),
-        ),
-
-        // Giant Main Title
-        const FittedBox(
-          fit: BoxFit.scaleDown,
-          child: Text(
-            'HARAP TENANG & DENGARKAN KHUTBAH',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 52,
-              fontWeight: FontWeight.w900,
-              letterSpacing: 3.0,
-              color: AppColors.textLight,
+              letterSpacing: 3,
               shadows: [
                 Shadow(
-                  color: Colors.black,
-                  blurRadius: 15,
+                  color: AppColors.goldPrimary,
+                  blurRadius: 30,
                   offset: Offset(0, 4),
                 ),
               ],
@@ -510,46 +483,54 @@ class IqomahOverlayWidget extends StatelessWidget {
           ),
         ),
 
-        // Petugas Jum'at Grid / Row (jika terisi)
-        if (hasPetugas)
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
-            margin: const EdgeInsets.symmetric(horizontal: 20),
-            decoration: BoxDecoration(
-              color: const Color(0x33000000),
-              borderRadius: BorderRadius.circular(16),
-              border: Border.all(
-                color: AppColors.goldPrimary.withAlpha(100),
-                width: 1.5,
+        // Giant Main Title (Diperbesar sangat gagah untuk layar TV masjid)
+        const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 24),
+          child: FittedBox(
+            fit: BoxFit.scaleDown,
+            child: Text(
+              'HARAP TENANG & DENGARKAN KHUTBAH',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 84,
+                fontWeight: FontWeight.w900,
+                letterSpacing: 4.0,
+                color: AppColors.textLight,
+                shadows: [
+                  Shadow(
+                    color: Colors.black,
+                    blurRadius: 20,
+                    offset: Offset(0, 6),
+                  ),
+                  Shadow(
+                    color: AppColors.goldPrimary,
+                    blurRadius: 15,
+                  ),
+                ],
               ),
             ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                if (khotib.isNotEmpty)
-                  _buildPetugasItem('KHOTIB', khotib, Icons.record_voice_over),
-                if (imam.isNotEmpty)
-                  _buildPetugasItem('IMAM', imam, Icons.person),
-                if (muadzin.isNotEmpty)
-                  _buildPetugasItem('MUADZIN', muadzin, Icons.volume_up),
-                if (bilal.isNotEmpty)
-                  _buildPetugasItem('BILAL', bilal, Icons.notifications_active),
-              ],
-            ),
           ),
+        ),
 
         // Hadits Adab Khutbah & Larangan HP
         Container(
           width: double.infinity,
-          margin: const EdgeInsets.symmetric(horizontal: 20),
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+          margin: const EdgeInsets.symmetric(horizontal: 28),
+          padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
           decoration: BoxDecoration(
-            color: const Color(0x22EF4444),
-            borderRadius: BorderRadius.circular(16),
+            color: const Color(0x33EF4444),
+            borderRadius: BorderRadius.circular(20),
             border: Border.all(
-              color: AppColors.alertRed.withAlpha(180),
-              width: 1.8,
+              color: AppColors.alertRed.withAlpha(200),
+              width: 2.0,
             ),
+            boxShadow: const [
+              BoxShadow(
+                color: Colors.black45,
+                blurRadius: 15,
+                offset: Offset(0, 6),
+              ),
+            ],
           ),
           child: const Column(
             children: [
@@ -557,18 +538,18 @@ class IqomahOverlayWidget extends StatelessWidget {
                 '📵 NONAKTIFKAN NADA DERING HANDPHONE',
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  fontSize: 20,
+                  fontSize: 24,
                   fontWeight: FontWeight.w900,
-                  letterSpacing: 2.0,
+                  letterSpacing: 2.5,
                   color: Color(0xFFFCA5A5),
                 ),
               ),
-              SizedBox(height: 4),
+              SizedBox(height: 6),
               Text(
                 '"Barangsiapa berbicara saat imam berkhutbah, maka tidak ada pahala Jum\'at baginya." (HR. Ahmad)',
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  fontSize: 14,
+                  fontSize: 16,
                   fontStyle: FontStyle.italic,
                   color: AppColors.textLight,
                 ),
@@ -577,44 +558,6 @@ class IqomahOverlayWidget extends StatelessWidget {
           ),
         ),
       ],
-    );
-  }
-
-  Widget _buildPetugasItem(String role, String name, IconData icon) {
-    return Expanded(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Icon(icon, size: 16, color: AppColors.goldPrimary),
-              const SizedBox(width: 6),
-              Text(
-                role,
-                style: const TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w800,
-                  letterSpacing: 1.5,
-                  color: AppColors.goldPrimary,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 4),
-          Text(
-            name,
-            textAlign: TextAlign.center,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: const TextStyle(
-              fontSize: 15,
-              fontWeight: FontWeight.bold,
-              color: AppColors.textLight,
-            ),
-          ),
-        ],
-      ),
     );
   }
 }

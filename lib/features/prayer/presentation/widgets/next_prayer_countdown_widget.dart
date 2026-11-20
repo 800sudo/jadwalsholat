@@ -100,54 +100,71 @@ class NextPrayerCountdownWidget extends StatelessWidget {
             ],
           ),
 
-          // Prayer Name & Target Time (Rata tengah, di bawah nama sholat, ukuran lebih besar & jelas)
+          // Prayer Name & Target Time (Rata tengah, nama sholat di atas, waktu di bawahnya lebih besar & jelas)
           Padding(
-            padding: const EdgeInsets.symmetric(vertical: 6),
+            padding: const EdgeInsets.symmetric(vertical: 4),
             child: Center(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text(
-                    nextPrayer!.label.toUpperCase(),
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(
-                      fontSize: 46,
-                      fontWeight: FontWeight.w900,
-                      letterSpacing: 2.0,
-                      height: 1.1,
-                      color: AppColors.textLight,
+                  FittedBox(
+                    fit: BoxFit.scaleDown,
+                    child: Text(
+                      nextPrayer!.label.toUpperCase(),
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                        fontSize: 54,
+                        fontWeight: FontWeight.w900,
+                        letterSpacing: 3.0,
+                        height: 1.1,
+                        color: AppColors.textLight,
+                        shadows: [
+                          Shadow(
+                            color: Colors.black54,
+                            blurRadius: 10,
+                            offset: Offset(0, 3),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: 10),
                   Container(
                     padding: const EdgeInsets.symmetric(
-                      horizontal: 18,
-                      vertical: 6,
+                      horizontal: 24,
+                      vertical: 8,
                     ),
                     decoration: BoxDecoration(
-                      color: AppColors.bgDarkStart.withAlpha(180),
-                      borderRadius: BorderRadius.circular(10),
+                      color: AppColors.bgDarkStart.withAlpha(220),
+                      borderRadius: BorderRadius.circular(14),
                       border: Border.all(
-                        color: AppColors.goldPrimary.withAlpha(120),
-                        width: 1.2,
+                        color: AppColors.goldPrimary.withAlpha(150),
+                        width: 1.5,
                       ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: AppColors.goldPrimary.withAlpha(30),
+                          blurRadius: 12,
+                          offset: const Offset(0, 2),
+                        ),
+                      ],
                     ),
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         const Icon(
                           Icons.access_time_filled,
-                          size: 20,
+                          size: 24,
                           color: AppColors.goldPrimary,
                         ),
-                        const SizedBox(width: 8),
+                        const SizedBox(width: 10),
                         Text(
                           'Pukul ${TimeFormatter.formatHHmm(nextPrayer!.dateTime)} WIB',
                           style: const TextStyle(
-                            fontSize: 22,
-                            fontWeight: FontWeight.w800,
-                            letterSpacing: 1.0,
+                            fontSize: 26,
+                            fontWeight: FontWeight.w900,
+                            letterSpacing: 1.2,
                             color: AppColors.goldLight,
                           ),
                         ),

@@ -140,7 +140,7 @@ void main() {
     );
 
     testWidgets(
-      'IqomahOverlayWidget menampilkan layar standby khutbah dan nama petugas Jum\'at',
+      'IqomahOverlayWidget menampilkan layar standby khutbah dengan teks yang diperbesar',
       (tester) async {
         final fridayPrayer = PrayerItem(
           name: PrayerName.dzuhur,
@@ -164,10 +164,7 @@ void main() {
 
         expect(find.text('KHUTBAH JUM\'AT BERLANGSUNG'), findsOneWidget);
         expect(find.text('HARAP TENANG & DENGARKAN KHUTBAH'), findsOneWidget);
-        expect(find.text('Dr. KH. Abdullah Syakir, MA'), findsOneWidget);
-        expect(find.text('Ustadz Zulkifli, SQ'), findsOneWidget);
-        expect(find.text('Ust. Bilal Ramadhan'), findsOneWidget);
-        expect(find.text('Ust. Hasan'), findsOneWidget);
+        expect(find.text('أَنْصِتُوا وَاسْمَعُوا وَأَطِيعُوا رَحِمَكُمُ اللهُ'), findsOneWidget);
         expect(
           find.textContaining('NONAKTIFKAN NADA DERING HANDPHONE'),
           findsOneWidget,

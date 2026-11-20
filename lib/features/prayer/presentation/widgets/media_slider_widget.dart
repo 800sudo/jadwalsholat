@@ -90,21 +90,23 @@ class _MediaSliderWidgetState extends State<MediaSliderWidget> {
           // 1. Layer Gambar
           if (hasImage) ...[
             if (fitMode == 'fill')
-              // Mode Fill: Meregang memenuhi seluruh kotak tanpa terpotong
+              // Mode Fill: Meregang memenuhi seluruh kotak layout tanpa terpotong
               Positioned.fill(
                 child: AppImageHelper.buildImage(
                   imageSource: imageUrl,
                   fit: BoxFit.fill,
+                  alignment: Alignment.center,
                   errorBuilder: (context, error, stackTrace) =>
                       const SizedBox.shrink(),
                 ),
               )
             else if (fitMode == 'cover')
-              // Mode Cover: Zoom memenuhi kotak
+              // Mode Cover: Zoom memenuhi kotak dengan alignment topCenter agar kepala/subjek tidak terpotong
               Positioned.fill(
                 child: AppImageHelper.buildImage(
                   imageSource: imageUrl,
                   fit: BoxFit.cover,
+                  alignment: Alignment.topCenter,
                   errorBuilder: (context, error, stackTrace) =>
                       const SizedBox.shrink(),
                 ),

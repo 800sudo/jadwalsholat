@@ -35,6 +35,7 @@ class AppImageHelper {
   static Widget buildImage({
     required String imageSource,
     BoxFit fit = BoxFit.cover,
+    Alignment alignment = Alignment.center,
     Widget Function(BuildContext, Object, StackTrace?)? errorBuilder,
   }) {
     final cleanSource = imageSource.trim();
@@ -46,6 +47,7 @@ class AppImageHelper {
       return Image.asset(
         cleanSource,
         fit: fit,
+        alignment: alignment,
         errorBuilder:
             errorBuilder ??
             (context, error, stackTrace) => const SizedBox.shrink(),
@@ -58,6 +60,7 @@ class AppImageHelper {
         return Image.memory(
           bytes,
           fit: fit,
+          alignment: alignment,
           errorBuilder:
               errorBuilder ??
               (context, error, stackTrace) => const SizedBox.shrink(),
@@ -69,6 +72,7 @@ class AppImageHelper {
       return Image.network(
         cleanSource,
         fit: fit,
+        alignment: alignment,
         errorBuilder:
             errorBuilder ??
             (context, error, stackTrace) => const SizedBox.shrink(),

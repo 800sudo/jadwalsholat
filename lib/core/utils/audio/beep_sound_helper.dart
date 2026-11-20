@@ -26,10 +26,10 @@ class BeepSoundHelper {
   }
 
   /// Memutar rangkaian suara beep peringatan:
-  /// Default: 4 kali beep @ 2 detik (2000 ms), jeda 600 ms,
+  /// Default: 2 kali beep @ 2 detik (2000 ms), jeda 600 ms,
   /// lalu 1 kali beep panjang penutup @ 4 detik (4000 ms).
   static Future<void> playWarningBeepSequence({
-    int count = 4,
+    int count = 2,
     int initialDurationMs = 2000,
     int pauseMs = 600,
     int finalDurationMs = 4000,

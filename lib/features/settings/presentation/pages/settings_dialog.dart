@@ -438,9 +438,13 @@ class _SettingsDialogState extends State<SettingsDialog> {
                                 }
                               } catch (e) {
                                 if (mounted) {
+                                  final msg = e.toString().contains('UnimplementedError') ||
+                                          e.toString().contains('UnsupportedError')
+                                      ? 'Pilih berkas didukung di Web/Browser. Untuk Android TV / STB, silakan tempel URL gambar.'
+                                      : 'Gagal memilih gambar: $e';
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
-                                      content: Text('Gagal memilih gambar: $e'),
+                                      content: Text(msg),
                                     ),
                                   );
                                 }
@@ -1837,7 +1841,7 @@ class _SettingsDialogState extends State<SettingsDialog> {
                       ),
                     ),
                     subtitle: const Text(
-                      'Membunyikan nada beep panjang (4x 2 detik + 1x penutup 4 detik) saat masuk waktu adzan dan saat countdown iqomah habis. Khusus sholat Jum\'at otomatis dinonaktifkan.',
+                      'Membunyikan nada beep panjang (2x 2 detik + 1x penutup 4 detik) saat masuk waktu adzan dan saat countdown iqomah habis. Khusus sholat Jum\'at otomatis dinonaktifkan.',
                       style: TextStyle(
                         fontSize: 11,
                         color: AppColors.textMuted,
@@ -1867,7 +1871,7 @@ class _SettingsDialogState extends State<SettingsDialog> {
                             BeepSoundHelper.playTripleBeep();
                           },
                           icon: const Icon(Icons.volume_up, size: 16),
-                          label: const Text('Tes Suara Beep (4x 2s + 1x 4s)'),
+                          label: const Text('Tes Suara Beep (2x 2s + 1x 4s)'),
                           style: ElevatedButton.styleFrom(
                             backgroundColor: const Color(0xFF4F46E5),
                             foregroundColor: Colors.white,
@@ -2242,7 +2246,7 @@ class _SettingsDialogState extends State<SettingsDialog> {
                   BeepSoundHelper.playTripleBeep();
                 },
                 icon: const Icon(Icons.volume_up, size: 20),
-                label: const Text('🔊 Uji Suara Beep (4x 2s + 1x 4s)'),
+                label: const Text('🔊 Uji Suara Beep (2x 2s + 1x 4s)'),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFF4F46E5),
                   foregroundColor: Colors.white,
@@ -2494,63 +2498,6 @@ class _SettingsDialogState extends State<SettingsDialog> {
                         setState(() => _selectedFridayKhutbahMinutes = val),
                     minValue: 10,
                     maxValue: 90,
-                  ),
-                ),
-              ],
-            ),
-            const Divider(color: AppColors.surfaceCardBorder, height: 24),
-
-            // Petugas Sholat Jum'at Pekan Ini
-            const Row(
-              children: [
-                Icon(Icons.badge, color: AppColors.goldPrimary, size: 18),
-                SizedBox(width: 8),
-                Text(
-                  'Jadwal Petugas Sholat Jum\'at Pekan Ini',
-                  style: TextStyle(
-                    fontSize: 13,
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.goldLight,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 10),
-            Row(
-              children: [
-                Expanded(
-                  child: _buildTextField(
-                    controller: _fridayKhotibController,
-                    label: 'Khotib Jum\'at',
-                    icon: Icons.record_voice_over,
-                  ),
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: _buildTextField(
-                    controller: _fridayImamController,
-                    label: 'Imam Jum\'at',
-                    icon: Icons.person,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 10),
-            Row(
-              children: [
-                Expanded(
-                  child: _buildTextField(
-                    controller: _fridayMuadzinController,
-                    label: 'Muadzin',
-                    icon: Icons.volume_up,
-                  ),
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: _buildTextField(
-                    controller: _fridayBilalController,
-                    label: 'Bilal / Muraqqi',
-                    icon: Icons.notifications_active,
                   ),
                 ),
               ],
